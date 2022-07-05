@@ -5,6 +5,31 @@ MB2 Voting is a plugin made for the [MB2 Log Reader](https://github.com/bully-mb
 1. [JRE](https://java.com/en/download/manual.jsp) that can run Java 11 or higher
 2. [MB2 Log Reader](https://github.com/bully-mb2/mb2-log-reader)
 
+# Usage
+User commands: triggered by /say <command>
+```
+!maplist <page>
+    - Shows the maplist
+!nominate <map>
+    - Nominates a map for the next vote
+!rtv
+    - Vote to change the map
+!unrtv
+    - Revoke vote to change the map
+!search <query>
+    - Search for map in the maplist
+!<number> 
+    - Vote for a specific choice
+```
+
+Admin commands: triggered by /smod say <command>
+```
+!poll <option1>, <option2>, ...
+    - Start a poll with the specified options
+!forcertv
+    - Force a vote to change the map
+```
+
 # Running
 ```
 java -jar mb2-plugin-voting-VERSION.jar
