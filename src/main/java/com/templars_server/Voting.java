@@ -91,12 +91,16 @@ public class Voting {
         }
 
         context.setCurrentMap(gameMap);
-        LOG.info("Map registered " + context.getCurrentMap());
+        LOG.info("Map registered " + gameMap.getName());
     }
 
     void onShutdownGameEvent(ShutdownGameEvent event) {
         context.addRounds(1);
-        int maxRounds = context.getCurrentMap().getMaxRounds();
+        int maxRounds = DEFAULT_MAX_ROUNDS;
+        if (context.getCurrentMap() != null) {
+            maxRounds = context.getCurrentMap().getMaxRounds();
+        }
+
         int round = context.getRound();
         LOG.info("Round ended, next round is round " + round + "/" + maxRounds);
         if (round > maxRounds) {
