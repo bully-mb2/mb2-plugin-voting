@@ -27,7 +27,7 @@ public class Application {
     private static final int RCON_RETRY_TIMEOUT_MILLISECONDS = 5000;
 
     public static void main(String[] args) throws Exception {
-        LOG.info("======== Starting mb2-plugin-template ========");
+        LOG.info("======== Starting mb2-plugin-voting ========");
         LOG.info("Loading settings");
         Settings settings = new Settings();
         settings.load("application.properties");
