@@ -66,44 +66,41 @@ public class Voting {
 
     void onClientConnectEvent(ClientConnectEvent event) {
         putPlayer(event.getSlot(), event.getName());
-        LOG.debug("Player " + event.getSlot() + " connected");
     }
 
     void onClientDisconnectEvent(ClientDisconnectEvent event) {
         context.getPlayers().remove(event.getSlot());
-        LOG.debug("Player " + event.getSlot() + " disconnected");
     }
 
     void onServerInitializationEvent(ServerInitializationEvent event) {
         context.reset();
-        LOG.debug("Players and Nominations cleared");
     }
 
     void onInitGameEvent(InitGameEvent event) {
+        GameMap nextMap = context.getNextMap();
+        if (nextMap != null) {
+            LOG.info("New round with next map set, switching to " + nextMap.getName());
+            rcon.send("map \"" + nextMap.getName() +"\"");
+            context.setNextMap(null);
+            return;
+        }
+
         GameMap gameMap = context.getMaps().get(event.getMapName());
         if (gameMap == null) {
             gameMap = new GameMap(event.getMapName(), DEFAULT_MAX_ROUNDS);
         }
 
         context.setCurrentMap(gameMap);
-        GameMap nextMap = context.getNextMap();
-        if (nextMap != null) {
-            rcon.send("map \"" + nextMap.getName() +"\"");
-            context.setNextMap(null);
-        }
-
-        LOG.debug("Map registered " + context.getCurrentMap());
+        LOG.info("Map registered " + context.getCurrentMap());
     }
 
     void onShutdownGameEvent(ShutdownGameEvent event) {
-        GameMap nextMap = context.getNextMap();
-        if (nextMap != null) {
-            rcon.send("map \"" + nextMap.getName() +"\"");
-            context.setNextMap(null);
-        }
-
         context.addRounds(1);
-        if (context.getRound() > context.getCurrentMap().getMaxRounds()) {
+        int maxRounds = context.getCurrentMap().getMaxRounds();
+        int round = context.getRound();
+        LOG.info("Round ended, next round is round " + round + "/" + maxRounds);
+        if (round > maxRounds) {
+            LOG.info("Round limit reached, starting vote");
             rcon.printAll(PREFIX + "Round limit reached");
             RtvCommand.startVote(context, rcon);
         }
@@ -114,6 +111,7 @@ public class Voting {
         for (Command<Context> command : adminCommands) {
             try {
                 if (command.execute(-1, message, context)) {
+                    LOG.info("Executed admin command " + command.getClass().getSimpleName());
                     break;
                 }
             } catch (InvalidArgumentException e) {
@@ -135,6 +133,7 @@ public class Voting {
         for (Command<Context> command : commands) {
             try {
                 if (command.execute(event.getSlot(), message, context)) {
+                    LOG.info("Executed user command " + command.getClass().getSimpleName() + " for player " + event.getSlot() + " - " + event.getName());
                     break;
                 }
             } catch (InvalidArgumentException e) {

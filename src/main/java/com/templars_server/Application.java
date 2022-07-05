@@ -87,7 +87,7 @@ public class Application {
         }
         LOG.info("Found " + context.getPlayers().size() + " players");
 
-        LOG.info("Setting up rtv rtm");
+        LOG.info("Setting up voting");
         Voting voting = new Voting(
                 context,
                 rcon

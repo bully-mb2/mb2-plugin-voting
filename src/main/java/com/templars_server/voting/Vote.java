@@ -37,6 +37,7 @@ public class Vote implements Runnable {
 
     public void start() {
         thread.start();
+        LOG.info("Vote " + getName() + " started");
     }
 
     public boolean isAlive() {
@@ -46,12 +47,14 @@ public class Vote implements Runnable {
     public synchronized void cancel() {
         canceled = true;
         thread.interrupt();
+        LOG.info("Vote " + getName() + " cancelled");
     }
 
     @Override
     public void run() {
         int attempt = 1;
         do {
+            LOG.info("Vote " + getName() + " attempt " + attempt);
             runVote(attempt++);
         } while(!isVoteFinished());
     }
@@ -92,7 +95,7 @@ public class Vote implements Runnable {
             try {
                 Thread.sleep(stepSize * 1000);
             } catch (InterruptedException e) {
-                cancelVote();
+                cancel();
                 return;
             }
 
@@ -146,6 +149,7 @@ public class Vote implements Runnable {
     }
 
     private void completeVote(String winner, int votes) {
+        LOG.info("Vote " + getName() + " completing, " + winner + " won with " + votes + " votes");
         if (votes < 1) {
             rcon.printAll(prefix + "No votes have been cast");
         } else {
@@ -158,11 +162,6 @@ public class Vote implements Runnable {
         } else {
             callback.onVoteComplete(winner);
         }
-    }
-
-    private void cancelVote() {
-        cancel();
-        rcon.printAll(prefix + "Vote cancelled");
     }
 
     private int tallyVotes(int choice) {
@@ -223,6 +222,10 @@ public class Vote implements Runnable {
             }
         }
         return builder.toString();
+    }
+
+    private String getName() {
+        return thread.getId() + "-" + thread.getName();
     }
 
 }
