@@ -1,10 +1,12 @@
 package com.templars_server.commands;
 
+import com.templars_server.Voting;
 import com.templars_server.model.Context;
+import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 
-public class ForceRtvCommand extends PreVoteCommand {
+public class ForceRtvCommand extends Command<Context> {
 
     public ForceRtvCommand() {
         super(
@@ -15,8 +17,13 @@ public class ForceRtvCommand extends PreVoteCommand {
     }
 
     @Override
-    protected void onExecute(int slot, Context context, RconClient rcon) throws InvalidArgumentException {
-        RtvCommand.startVote(context, rcon);
-    }
+    protected void onExecute(int slot, Context context) throws InvalidArgumentException {
+        RconClient rcon = context.getRconClient();
+        if (context.isVoting()) {
+            rcon.printAll(Voting.PREFIX + "There is already a vote in progress");
+            return;
+        }
 
+        RtvCommand.startVote(context, context.getRconClient());
+    }
 }
