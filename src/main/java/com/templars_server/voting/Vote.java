@@ -13,6 +13,7 @@ public class Vote implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(Vote.class);
     public static final int MAX_CHOICES = 6;
     private static final int VOTE_DURATION_SECONDS = 180;
+    private static final int REVOTE_DURATION_SECONDS = 80;
     private static final int VOTE_STEPS = 4;
     private static final int REVOTE_THRESHOLD = 0;
 
@@ -72,7 +73,7 @@ public class Vote implements Runnable {
     private void runVote(int attempt) {
         int duration = VOTE_DURATION_SECONDS;
         if (attempt > 1) {
-            duration = duration / 2;
+            duration = REVOTE_DURATION_SECONDS;
         }
 
         int stepSize = duration / VOTE_STEPS;
