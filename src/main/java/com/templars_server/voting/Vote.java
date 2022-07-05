@@ -12,9 +12,9 @@ public class Vote implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Vote.class);
     public static final int MAX_CHOICES = 6;
-    private static final int VOTE_DURATION_SECONDS = 180;
-    private static final int REVOTE_DURATION_SECONDS = 80;
-    private static final int VOTE_STEPS = 4;
+    private static final int VOTE_DURATION_SECONDS = 120;
+    private static final int REVOTE_DURATION_SECONDS = 90;
+    private static final int VOTE_STEPS = 3;
     private static final int REVOTE_THRESHOLD = 0;
 
     private final String prefix;
