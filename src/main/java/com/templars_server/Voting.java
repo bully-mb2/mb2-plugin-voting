@@ -1,6 +1,9 @@
 package com.templars_server;
 
 import com.templars_server.commands.*;
+import com.templars_server.model.Context;
+import com.templars_server.model.GameMap;
+import com.templars_server.model.Player;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -14,6 +17,7 @@ import java.util.List;
 public class Voting {
 
     public static final String PREFIX = "^2Vote » ^7";
+    public static final int DEFAULT_MAX_ROUNDS = 20;
     private static final Logger LOG = LoggerFactory.getLogger(Voting.class);
     private static final int PAGE_SIZE = 24;
 
@@ -76,21 +80,32 @@ public class Voting {
     }
 
     void onInitGameEvent(InitGameEvent event) {
-        context.setCurrentMap(event.getMapName());
-        String nextMap = context.getNextMap();
-        if (!nextMap.isEmpty()) {
-            rcon.send("map \"" + nextMap +"\"");
-            context.setNextMap("");
+        GameMap gameMap = context.getMaps().get(event.getMapName());
+        if (gameMap == null) {
+            gameMap = new GameMap(event.getMapName(), DEFAULT_MAX_ROUNDS);
+        }
+
+        context.setCurrentMap(gameMap);
+        GameMap nextMap = context.getNextMap();
+        if (nextMap != null) {
+            rcon.send("map \"" + nextMap.getName() +"\"");
+            context.setNextMap(null);
         }
 
         LOG.debug("Map registered " + context.getCurrentMap());
     }
 
     void onShutdownGameEvent(ShutdownGameEvent event) {
-        String nextMap = context.getNextMap();
-        if (!nextMap.isEmpty()) {
-            rcon.send("map \"" + nextMap +"\"");
-            context.setNextMap("");
+        GameMap nextMap = context.getNextMap();
+        if (nextMap != null) {
+            rcon.send("map \"" + nextMap.getName() +"\"");
+            context.setNextMap(null);
+        }
+
+        context.addRounds(1);
+        if (context.getRound() > context.getCurrentMap().getMaxRounds()) {
+            rcon.printAll(PREFIX + "Round limit reached");
+            RtvCommand.startVote(context, rcon);
         }
     }
 

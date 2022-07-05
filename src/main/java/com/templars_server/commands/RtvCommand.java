@@ -1,7 +1,8 @@
 package com.templars_server.commands;
 
-import com.templars_server.Context;
-import com.templars_server.Player;
+import com.templars_server.model.Context;
+import com.templars_server.model.GameMap;
+import com.templars_server.model.Player;
 import com.templars_server.Voting;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -86,7 +87,7 @@ public class RtvCommand extends PreVoteCommand {
                 .collect(Collectors.toList());
 
         if (nominations.size() < Vote.MAX_CHOICES - 1) {
-            List<String> mapChoices = new ArrayList<>(context.getMaps());
+            List<String> mapChoices = new ArrayList<>(context.getMaps().keySet());
             Collections.shuffle(mapChoices);
             mapChoices = mapChoices.stream()
                     .limit(Vote.MAX_CHOICES - 1 - nominations.size())
@@ -111,8 +112,13 @@ public class RtvCommand extends PreVoteCommand {
             return;
         }
 
+        GameMap gameMap = context.getMaps().get(result);
+        if (gameMap == null) {
+            gameMap = new GameMap(result, Voting.DEFAULT_MAX_ROUNDS);
+        }
+
         rcon.printAll(Voting.PREFIX + "Switching to map " + result + " next round");
-        context.setNextMap(result);
+        context.setNextMap(gameMap);
     }
 
 }

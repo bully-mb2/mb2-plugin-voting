@@ -1,4 +1,4 @@
-package com.templars_server;
+package com.templars_server.model;
 
 public class Player {
 
