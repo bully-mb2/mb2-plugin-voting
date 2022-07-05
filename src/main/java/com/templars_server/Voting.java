@@ -133,7 +133,7 @@ public class Voting {
         for (Command<Context> command : commands) {
             try {
                 if (command.execute(event.getSlot(), message, context)) {
-                    LOG.info("Executed user command " + command.getClass().getSimpleName() + " for player " + event.getSlot() + " - " + event.getName());
+                    LOG.info("Executed user command " + command.getClass().getSimpleName() + " for player " + event.getSlot() + " " + event.getName());
                     break;
                 }
             } catch (InvalidArgumentException e) {
