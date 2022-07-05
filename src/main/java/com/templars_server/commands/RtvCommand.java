@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class RtvCommand extends PreVoteCommand {
 
+    private static final float THRESHOLD_PERCENTAGE = 0.5f;
     private static final String DONT_CHANGE = "Don't change";
 
     public RtvCommand() {
@@ -43,7 +44,7 @@ public class RtvCommand extends PreVoteCommand {
         long voters = players.values().stream()
                 .filter(Player::isRtv)
                 .count();
-        int threshold = players.size();
+        int threshold = (int) Math.ceil(players.size() * THRESHOLD_PERCENTAGE);
         if (player.isRtv()) {
             if (before) {
                 rcon.printAll(String.format("%s%s^7 really wants you to rock the vote (%d/%d)", Voting.PREFIX, players.get(slot).getName(), voters, threshold));
