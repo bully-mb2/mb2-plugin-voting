@@ -1,0 +1,16 @@
+<xs:schema version="1.3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="Shared.xsd"/>
+
+    <xs:element name="ClientConnectEvent">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="slot" type="PlayerSlot"/>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="ip" type="xs:string"/>
+                <xs:element name="port" type="xs:int"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

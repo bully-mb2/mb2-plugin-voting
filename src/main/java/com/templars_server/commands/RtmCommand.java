@@ -1,0 +1,22 @@
+package com.templars_server.commands;
+
+import com.templars_server.Context;
+import com.templars_server.Voting;
+import com.templars_server.util.command.InvalidArgumentException;
+import com.templars_server.util.rcon.RconClient;
+
+public class RtmCommand extends PreVoteCommand {
+
+    public RtmCommand() {
+        super(
+                "rtm",
+                false,
+                "!rtm");
+    }
+
+    @Override
+    protected void onExecute(int slot, Context context, RconClient rcon) throws InvalidArgumentException {
+        rcon.print(slot, Voting.PREFIX + "RTM not yet implemented, sorry");
+    }
+
+}
