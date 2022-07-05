@@ -49,7 +49,7 @@ public class Voting {
         LOG.info("Setting up admin commands:");
         adminCommands.clear();
         adminCommands.add(new PollCommand());
-        adminCommands.add(new ForceRTVCommand());
+        adminCommands.add(new ForceRtvCommand());
         for (Command<Context> command : adminCommands) {
             LOG.info("    - " + command.getClass().getSimpleName());
         }

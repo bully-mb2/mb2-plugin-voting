@@ -4,9 +4,9 @@ import com.templars_server.model.Context;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 
-public class ForceRTVCommand extends PreVoteCommand {
+public class ForceRtvCommand extends PreVoteCommand {
 
-    public ForceRTVCommand() {
+    public ForceRtvCommand() {
         super(
                 "forcertv",
                 false,
