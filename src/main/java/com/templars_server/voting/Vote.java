@@ -71,7 +71,11 @@ public class Vote implements Runnable {
 
     private void runVote(int attempt) {
         int duration = VOTE_DURATION_SECONDS;
-        int stepSize = VOTE_DURATION_SECONDS / VOTE_STEPS;
+        if (attempt > 1) {
+            duration = duration / 2;
+        }
+
+        int stepSize = duration / VOTE_STEPS;
         List<String> choices = this.choices.stream()
                 .limit(Vote.MAX_CHOICES)
                 .distinct()
