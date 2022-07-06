@@ -30,6 +30,9 @@ Admin commands: triggered by /smod say <command>
     - Force a vote to change the map
 ```
 
+## Configuration
+A maplist will be automatically generated upon first run. This map file includes the entire maplist available to MB2 servers by default. The maplist should contain 1 map per line, optionally with the max amount of rounds specified before it.
+
 # Running
 ```
 java -jar mb2-plugin-voting-VERSION.jar
