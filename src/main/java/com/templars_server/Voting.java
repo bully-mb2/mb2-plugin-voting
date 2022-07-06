@@ -88,8 +88,10 @@ public class Voting {
 
         GameMap gameMap = context.getMapByName(event.getMapName());
         context.setCurrentMap(gameMap);
-        rcon.printConAll(PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
         LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+        if (!context.isVoting()) {
+            rcon.printConAll(PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+        }
     }
 
     void onShutdownGameEvent(ShutdownGameEvent event) {
@@ -104,7 +106,7 @@ public class Voting {
             LOG.info("Round limit reached, starting vote");
             rcon.printAll(PREFIX + "Round limit reached");
             RtvCommand.startVote(context, rcon);
-            context.setRound(0);
+            context.setRound(1);
         }
     }
 
