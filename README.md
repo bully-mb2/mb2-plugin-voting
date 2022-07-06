@@ -32,6 +32,7 @@ Admin commands: triggered by /smod say <command>
 
 ## Configuration
 A maplist will be automatically generated upon first run. This map file includes the entire maplist available to MB2 servers by default. The maplist should contain 1 map per line, optionally with the max amount of rounds specified before it.
+![image](https://user-images.githubusercontent.com/86576295/177452137-1290f524-06ee-4d88-91af-688ec111f4e2.png)
 
 # Running
 ```
