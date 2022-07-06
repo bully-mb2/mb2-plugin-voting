@@ -44,6 +44,10 @@ public class Context {
         return round;
     }
 
+    public void setRound(int round) {
+        this.round = round;
+    }
+
     public void addRounds(int round) {
         this.round += round;
     }

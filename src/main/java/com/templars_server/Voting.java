@@ -104,6 +104,7 @@ public class Voting {
             LOG.info("Round limit reached, starting vote");
             rcon.printAll(PREFIX + "Round limit reached");
             RtvCommand.startVote(context, rcon);
+            context.setRound(0);
         }
     }
 
