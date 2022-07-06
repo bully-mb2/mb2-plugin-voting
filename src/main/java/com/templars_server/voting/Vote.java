@@ -154,18 +154,18 @@ public class Vote implements Runnable {
 
     private void completeVote(String winner, int votes) {
         LOG.info(getName() + " completing, " + winner + " won with " + votes + " votes");
+        if (canceled) {
+            LOG.info("Vote was cancelled");
+            return;
+        }
+
         if (votes < 1) {
             rcon.printAll(prefix + "No votes have been cast");
         } else {
             rcon.printAll(prefix + makeChoicesString(choices, this.votes));
             rcon.printAll(prefix + winner + " wins with " + makeVoteString(votes));
         }
-
-        if (canceled) {
-            LOG.info("Vote concluded but was cancelled, winner: " + winner);
-        } else {
-            callback.onVoteComplete(winner);
-        }
+        callback.onVoteComplete(winner);
     }
 
     private int tallyVotes(int choice) {
