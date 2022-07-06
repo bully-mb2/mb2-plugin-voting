@@ -73,6 +73,7 @@ public class Voting {
     }
 
     void onServerInitializationEvent(ServerInitializationEvent event) {
+        LOG.info("Server init detected, resetting context and cancelling votes");
         context.reset();
     }
 
@@ -85,11 +86,7 @@ public class Voting {
             return;
         }
 
-        GameMap gameMap = context.getMaps().get(event.getMapName());
-        if (gameMap == null) {
-            gameMap = new GameMap(event.getMapName(), DEFAULT_MAX_ROUNDS);
-        }
-
+        GameMap gameMap = context.getMapByName(event.getMapName());
         context.setCurrentMap(gameMap);
         LOG.info("Map registered " + gameMap.getName());
     }

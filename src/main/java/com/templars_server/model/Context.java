@@ -1,5 +1,6 @@
 package com.templars_server.model;
 
+import com.templars_server.Voting;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.Vote;
 
@@ -45,6 +46,13 @@ public class Context {
 
     public void addRounds(int round) {
         this.round += round;
+    }
+
+    public GameMap getMapByName(String mapName) {
+        return getMaps().getOrDefault(
+                mapName,
+                new GameMap(mapName, Voting.DEFAULT_MAX_ROUNDS)
+        );
     }
 
     public GameMap getCurrentMap() {
