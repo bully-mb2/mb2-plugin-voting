@@ -72,6 +72,7 @@ public class RtvCommand extends PreVoteCommand {
         context.setVote(vote);
     }
 
+    // TODO :: Messy, should probably move it to a MapVoteBuilder or something
     private static Vote makeVote(Context context, RconClient rcon) {
         Map<Integer, Player> players = context.getPlayers();
         players.values().forEach(player -> player.setRtv(false));
