@@ -1,7 +1,8 @@
 package com.templars_server.commands;
 
-import com.templars_server.Context;
-import com.templars_server.Player;
+import com.templars_server.model.Context;
+import com.templars_server.model.GameMap;
+import com.templars_server.model.Player;
 import com.templars_server.Voting;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class RtvCommand extends PreVoteCommand {
 
+    private static final float THRESHOLD_PERCENTAGE = 0.5f;
     private static final String DONT_CHANGE = "Don't change";
 
     public RtvCommand() {
@@ -43,7 +45,7 @@ public class RtvCommand extends PreVoteCommand {
         long voters = players.values().stream()
                 .filter(Player::isRtv)
                 .count();
-        int threshold = players.size();
+        int threshold = (int) Math.ceil(players.size() * THRESHOLD_PERCENTAGE);
         if (player.isRtv()) {
             if (before) {
                 rcon.printAll(String.format("%s%s^7 really wants you to rock the vote (%d/%d)", Voting.PREFIX, players.get(slot).getName(), voters, threshold));
@@ -70,6 +72,7 @@ public class RtvCommand extends PreVoteCommand {
         context.setVote(vote);
     }
 
+    // TODO :: Messy, should probably move it to a MapVoteBuilder or something
     private static Vote makeVote(Context context, RconClient rcon) {
         Map<Integer, Player> players = context.getPlayers();
         players.values().forEach(player -> player.setRtv(false));
@@ -85,7 +88,7 @@ public class RtvCommand extends PreVoteCommand {
                 .collect(Collectors.toList());
 
         if (nominations.size() < Vote.MAX_CHOICES - 1) {
-            List<String> mapChoices = new ArrayList<>(context.getMaps());
+            List<String> mapChoices = new ArrayList<>(context.getMaps().keySet());
             Collections.shuffle(mapChoices);
             mapChoices = mapChoices.stream()
                     .limit(Vote.MAX_CHOICES - 1 - nominations.size())
@@ -110,8 +113,13 @@ public class RtvCommand extends PreVoteCommand {
             return;
         }
 
+        GameMap gameMap = context.getMaps().get(result);
+        if (gameMap == null) {
+            gameMap = new GameMap(result, Voting.DEFAULT_MAX_ROUNDS);
+        }
+
         rcon.printAll(Voting.PREFIX + "Switching to map " + result + " next round");
-        context.setNextMap(result);
+        context.setNextMap(gameMap);
     }
 
 }

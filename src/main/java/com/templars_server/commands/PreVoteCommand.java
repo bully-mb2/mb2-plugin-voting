@@ -1,6 +1,6 @@
 package com.templars_server.commands;
 
-import com.templars_server.Context;
+import com.templars_server.model.Context;
 import com.templars_server.Voting;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
@@ -20,7 +20,7 @@ public abstract class PreVoteCommand extends Command<Context> {
             return;
         }
 
-        if (!context.getNextMap().isEmpty()) {
+        if (context.getNextMap() != null) {
             rcon.print(slot, Voting.PREFIX + "Vote already ended, switching to " + context.getNextMap() + " next round");
             return;
         }

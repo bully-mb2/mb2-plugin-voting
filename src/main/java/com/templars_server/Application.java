@@ -1,5 +1,8 @@
 package com.templars_server;
 
+import com.templars_server.model.Context;
+import com.templars_server.model.GameMap;
+import com.templars_server.model.Player;
 import com.templars_server.util.mqtt.MBMqttClient;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.util.settings.Settings;
@@ -14,8 +17,7 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,10 +26,9 @@ public class Application {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
     private static final String MAPS_PATH = "maps.txt";
-    private static final int RCON_RETRY_TIMEOUT_MILLISECONDS = 5000;
 
     public static void main(String[] args) throws Exception {
-        LOG.info("======== Starting mb2-plugin-template ========");
+        LOG.info("======== Starting mb2-plugin-voting ========");
         LOG.info("Loading settings");
         Settings settings = new Settings();
         settings.load("application.properties");
@@ -48,12 +49,8 @@ public class Application {
 
         LOG.info("Loading maps");
         File file = new File(MAPS_PATH);
-        List<String> maps;
-        if (file.exists()) {
-            try (Stream<String> lines = Files.lines(Paths.get(MAPS_PATH))) {
-                maps = lines.collect(Collectors.toList());
-            }
-        } else {
+        LinkedHashMap<String, GameMap> gameMaps = new LinkedHashMap<>();
+        if (!file.exists()) {
             try (FileWriter writer = new FileWriter(file)) {
                 LOG.info(MAPS_PATH + " not found, creating from default");
                 InputStream defaultContentStream = Application.class.getResourceAsStream("/" + MAPS_PATH);
@@ -63,21 +60,33 @@ public class Application {
 
                 String defaultContent = new String(defaultContentStream.readAllBytes(), Charset.defaultCharset());
                 writer.write(defaultContent);
-                maps = new ArrayList<>(List.of(defaultContent.replace("\r", "").split("\n")));
             }
         }
 
-        maps.sort(String::compareTo);
-        LOG.info("Maps: " + maps);
+        try (Stream<String> stream = Files.lines(Paths.get(MAPS_PATH))) {
+            List<String> lines = stream.collect(Collectors.toList());
+            for (String line : lines) {
+                int maxRounds = Voting.DEFAULT_MAX_ROUNDS;
+                String name = line;
+                String[] split = line.split(" ");
+                if (split.length == 2) {
+                    maxRounds = Integer.parseInt(split[0]);
+                    name = split[1];
+                }
 
+                gameMaps.put(name, new GameMap(name, maxRounds));
+            }
+        }
+
+        LOG.info("Found " + gameMaps.size() + " maps");
         LOG.info("Fetching current player count");
-        Context context = new Context(rcon, maps);
+        Context context = new Context(rcon, gameMaps);
         for (Integer slot : rcon.playerSlots()) {
             context.getPlayers().put(slot, new Player(slot, null));
         }
         LOG.info("Found " + context.getPlayers().size() + " players");
 
-        LOG.info("Setting up rtv rtm");
+        LOG.info("Setting up voting");
         Voting voting = new Voting(
                 context,
                 rcon

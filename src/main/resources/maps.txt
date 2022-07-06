@@ -1,355 +1,355 @@
-mb2_duel_training
-mb2_yavinassault_veh
-mb2_duel_yavin4
-mb2_yavinassault
-mb2_ctf_yavin
-um_bespin
-um_bespin_classic
-um_bespin_night
-um_bespin_tournament
-um_ns_guns
-um_ns_streets
-um_olympus
-um_canyon
-um_canyon_guns
-um_crypt
-um_ctf_bespin
-um_ctf_coruscant
-um_ctf_gib_bespin
-um_ctf_gib_coruscant
-um_ctf_gib_imperial
-um_ctf_gib_narshaddaa
-um_ctf_narshaddaa
-um_ctf_oceantemple
-um_ctf_rift
-um_dojo_v2
-um_moseisley
-um_taspir
-um_taspir_rockets
-um_tomb
-um_vjun
-um_antioch
-um_birdmino
-um_bouncy
-um_bouncybash
-um_cantina
-um_castlevania
-um_colosseum
-um_crazyrace
-um_crazyrace2
-um_crazytrain
-um_cultbattle
-um_dojo
-um_downfall
-um_downfall_guns
-um_football
-um_goodandevil
-um_hammertime
-um_jawarace
-um_lasertag
-um_lastonesinking
-um_lavaduel
-um_lavaparty
-um_lavarising
-um_medievil
-um_nightmare
-um_pirvsnin
-um_pistolduel
-um_poolparty
-um_prisonraid_v4
-um_ragnosbattle
-um_rockettennis
-um_sniperlabs
-um_spacerace
-um_superdeatharena
-um_swoopbattle
-um_swooprace
-um_throwthemin
-um_water
-um_xwing
-um_ctf_medievil
-um_sarlaccbarge
-mb2_tutorial00
-mb2_tutorial01
-mb2_tutorial02
-mb2_tradefed
-mb2_ctf_theed
-mb2_theed
-mb2_ctf_tusken
-mb2_duel_tusken
-mb2_duel_dunesea
-mb2_ps_desert
-mb2_sailbarge
-mb2_tatooine
-mb2_ctf_backstreets
-mb2_duel_taris
-mb2_tantiveiv_classic
-mb2_tantiveiv
-mb2_duel_starkiller_base
-mb2_starkiller_base
-mb2_duel_cargoheist
-mb2_smuggler
-mb2_duel_sdestroyer
-mb2_ctf_imperial
-mb2_sdestroyer
-mb2_ptf_sdestroyer
-mb2_veh_destroyer
-mb2_scarif
-mb2_citadel
-mb2_duel_profundity
-mb2_ptf_scarif
-mb2_ctf_scarif
-mb2_duel_detention
-mb2_duel_datacore
-mb2_duel_rcbridge
-mb2_republiccruiser_fastload
-mb2_republiccruiser
-mb2_rc_hangarc
-pb2_cloudcity
-pb2_depot
-pb2_dotf
-pb2_kashyyyk
-pb2_reactor
-pb2_sdestroyer
-pb_dotf
-pb_sdestroyer
-som_dotf
-som_snowfacility
-pb2_citadel
-pb2_fdepot
-pb2_ptf_jeditemple
-pb2_ptf_sdestroyer
-pb2_ctf_imperial
-pb2_ctf_bespin
-pb2_ctf_rift
-pb2_ctf_theed
-som_sdestroyer
-som_theed
-som_ptf_sdestroyer
-mb2_mygeeto
-mb2_duel_mustafar
-mb2_mustafar
-mb2_lunarbase
-mb2_duel_korriban
-mb2_korriban
-mb2_ps_korriban
-mb2_duel_kamino
-mb2_kamino
-mb2_duel_jeditemple
-mb2_jeditemple_classic
-mb2_jeditemple
-mb2_ptf_jeditemple
-mb2_jakku
-mb2_duel_jabba
-mb2_jabba
-mb2_ctf_eravana
-mb2_eravana
-mb2_duel_dantooine
-mb2_enclave
-mb2_snowfacility
-mb2_echobase
-mb2_dxun
-mb2_duel_votj
-mb2_duel_utapau
-mb2_duel_starforge
-mb2_duel_sabh
-mb2_duel_revan
-mb2_duel_ravager
-mb2_duel_malachor
-mb2_duel_wbw
-mb2_dotf_classicb
-mb2_dotf_classic
-mb2_duel_dotf
-mb2_dotf
-mb2_duel_emperor
-mb2_duel_emperor_fancy
-mb2_deathstar
-mb2_ctf_deathstar
-mb2_ptf_deathstar
-mb2_duel_crait
-mb2_duel_crait_alt
-mb2_duel_supremacy
-mb2_coruscant_chase
-mb2_duel_office
-mb2_duel_senate
-mb2_duel_corellia
-mb2_corellia
-mb2_commtower_classic
-mb2_commtower
-mb2_cmp_hotfo
-mb2_cmp_jedha
-mb2_cmp_kashyyyk
-mb2_cmp_lab
-mb2_cmp_massassi
-mb2_cmp_mountainkeep
-mb2_cmp_poolday
-mb2_cmp_poolparty
-mb2_cmp_prison
-mb2_cmp_raxus
-mb2_cmp_reactor
-mb2_cmp_rescue
-mb2_cmp_narshaddaa
-mb2_cmp_ctf_ascension
-mb2_cmp_theedstreets
-mb2_cmp_zombiehorror
-mb2_cmp_duel_calodan
-mb2_cmp_arctic
-mb2_cmp_arena
-mb2_cmp_assault
-mb2_cmp_cislabs
-mb2_cmp_coruscantuc
-mb2_cmp_deltaprime
-mb2_cmp_doomgiver
-mb2_cmp_duel_vengeance
-mb2_cmp_duel_vjun
-mb2_cmp_dust2
-mb2_cmp_endor
-mb2_cmp_fdepot
-mb2_cmp_geocanyons
-mb2_cmp_hotel
-mb2_cmp_telos
-mb2_duel_cc
-mb2_cloudcity
-mb2_boc
-mb2_duel_boc
-mb2_duel_ihod
-mb2_alderaan
-legosw
-300_thermopylae
-aliens
-aliens2
-aliens3
-cod4_tanker
-dc_universe
-de_dust2
-ffviiac_church
-ffvii_shinrahq
-fifa
-fy_poolday
-fy_poolparty
-halo_bc
-halo_for
-jp_siteb
-lotr_helmsdeep
-matrix_bbrawl
-matrix_lobby
-mgs1_ninja
-mgs1_ocelot
-mgs2_agear
-mgs2_fortune
-mgsvr
-mk_deadpool
-monster_forest
-pokemon
-re_mansion
-shogun
-slender
-sm3_venom
-ssb_pkmnstadium
-tmnt
-ultimate_showdown
-ww2_omaha
-halo_ctf_bc
-mp/ctf1
-mp/ctf2
-mp/ctf4
-mp/ctf5
-academy1
-academy2
-academy3
-academy4
-academy5
-academy6
-hoth2
-hoth3
-kor1
-kor2
-mp/ctf3
-mp/duel1
-mp/duel10
-mp/duel2
-mp/duel3
-mp/duel4
-mp/duel5
-mp/duel6
-mp/duel7
-mp/duel8
-mp/duel9
-mp/ffa1
-mp/ffa2
-mp/ffa3
-mp/ffa4
-mp/ffa5
-mp/siege_desert
-mp/siege_hoth
-mp/siege_korriban
-t1_danger
-t1_fatal
-t1_inter
-t1_rail
-t1_sour
-t1_surprise
-t2_dpred
-t2_rancor
-t2_rogue
-t2_trip
-t2_wedge
-t3_bounty
-t3_byss
-t3_hevil
-t3_rift
-t3_stamp
-taspir1
-taspir2
-vjun1
-vjun2
-vjun3
-yavin1
-yavin1b
-yavin2
-duel_bespin
-duel_hangar
-duel_temple
-duel_training
-artus_detention
-artus_mine
-artus_topside
-bespin_platform
-bespin_streets
-bespin_undercity
-cairn_assembly
-cairn_bay
-cairn_dock1
-cairn_reactor
-ctf_bespin
-ctf_imperial
-ctf_ns_streets
-ctf_yavin
-doom_comm
-doom_detention
-doom_shields
-duel_bay
-duel_carbon
-duel_jedi
-duel_pit
-ffa_bespin
-ffa_deathstar
-ffa_imperial
-ffa_ns_hideout
-ffa_ns_streets
-ffa_raven
-ffa_yavin
-kejim_base
-kejim_post
-ns_hideout
-ns_starpad
-ns_streets
-pit
-valley
-yavin_canyon
-yavin_courtyard
-yavin_final
-yavin_swamp
-yavin_temple
-yavin_trial
-test
+20 mb2_duel_training
+20 mb2_yavinassault_veh
+20 mb2_duel_yavin4
+20 mb2_yavinassault
+20 mb2_ctf_yavin
+20 um_bespin
+20 um_bespin_classic
+20 um_bespin_night
+20 um_bespin_tournament
+20 um_ns_guns
+20 um_ns_streets
+20 um_olympus
+20 um_canyon
+20 um_canyon_guns
+20 um_crypt
+20 um_ctf_bespin
+20 um_ctf_coruscant
+20 um_ctf_gib_bespin
+20 um_ctf_gib_coruscant
+20 um_ctf_gib_imperial
+20 um_ctf_gib_narshaddaa
+20 um_ctf_narshaddaa
+20 um_ctf_oceantemple
+20 um_ctf_rift
+20 um_dojo_v2
+20 um_moseisley
+20 um_taspir
+20 um_taspir_rockets
+20 um_tomb
+20 um_vjun
+20 um_antioch
+20 um_birdmino
+20 um_bouncy
+20 um_bouncybash
+20 um_cantina
+20 um_castlevania
+20 um_colosseum
+20 um_crazyrace
+20 um_crazyrace2
+20 um_crazytrain
+20 um_cultbattle
+20 um_dojo
+20 um_downfall
+20 um_downfall_guns
+20 um_football
+20 um_goodandevil
+20 um_hammertime
+20 um_jawarace
+20 um_lasertag
+20 um_lastonesinking
+20 um_lavaduel
+20 um_lavaparty
+20 um_lavarising
+20 um_medievil
+20 um_nightmare
+20 um_pirvsnin
+20 um_pistolduel
+20 um_poolparty
+20 um_prisonraid_v4
+20 um_ragnosbattle
+20 um_rockettennis
+20 um_sniperlabs
+20 um_spacerace
+20 um_superdeatharena
+20 um_swoopbattle
+20 um_swooprace
+20 um_throwthemin
+20 um_water
+20 um_xwing
+20 um_ctf_medievil
+20 um_sarlaccbarge
+20 mb2_tutorial00
+20 mb2_tutorial01
+20 mb2_tutorial02
+20 mb2_tradefed
+20 mb2_ctf_theed
+20 mb2_theed
+20 mb2_ctf_tusken
+20 mb2_duel_tusken
+20 mb2_duel_dunesea
+20 mb2_ps_desert
+20 mb2_sailbarge
+20 mb2_tatooine
+20 mb2_ctf_backstreets
+20 mb2_duel_taris
+20 mb2_tantiveiv_classic
+20 mb2_tantiveiv
+20 mb2_duel_starkiller_base
+20 mb2_starkiller_base
+20 mb2_duel_cargoheist
+20 mb2_smuggler
+20 mb2_duel_sdestroyer
+20 mb2_ctf_imperial
+20 mb2_sdestroyer
+20 mb2_ptf_sdestroyer
+20 mb2_veh_destroyer
+20 mb2_scarif
+20 mb2_citadel
+20 mb2_duel_profundity
+20 mb2_ptf_scarif
+20 mb2_ctf_scarif
+20 mb2_duel_detention
+20 mb2_duel_datacore
+20 mb2_duel_rcbridge
+20 mb2_republiccruiser_fastload
+20 mb2_republiccruiser
+20 mb2_rc_hangarc
+20 pb2_cloudcity
+20 pb2_depot
+20 pb2_dotf
+20 pb2_kashyyyk
+20 pb2_reactor
+20 pb2_sdestroyer
+20 pb_dotf
+20 pb_sdestroyer
+20 som_dotf
+20 som_snowfacility
+20 pb2_citadel
+20 pb2_fdepot
+20 pb2_ptf_jeditemple
+20 pb2_ptf_sdestroyer
+20 pb2_ctf_imperial
+20 pb2_ctf_bespin
+20 pb2_ctf_rift
+20 pb2_ctf_theed
+20 som_sdestroyer
+20 som_theed
+20 som_ptf_sdestroyer
+20 mb2_mygeeto
+20 mb2_duel_mustafar
+20 mb2_mustafar
+20 mb2_lunarbase
+20 mb2_duel_korriban
+20 mb2_korriban
+20 mb2_ps_korriban
+20 mb2_duel_kamino
+20 mb2_kamino
+20 mb2_duel_jeditemple
+20 mb2_jeditemple_classic
+20 mb2_jeditemple
+20 mb2_ptf_jeditemple
+20 mb2_jakku
+20 mb2_duel_jabba
+20 mb2_jabba
+20 mb2_ctf_eravana
+20 mb2_eravana
+20 mb2_duel_dantooine
+20 mb2_enclave
+20 mb2_snowfacility
+20 mb2_echobase
+20 mb2_dxun
+20 mb2_duel_votj
+20 mb2_duel_utapau
+20 mb2_duel_starforge
+20 mb2_duel_sabh
+20 mb2_duel_revan
+20 mb2_duel_ravager
+20 mb2_duel_malachor
+20 mb2_duel_wbw
+20 mb2_dotf_classicb
+20 mb2_dotf_classic
+20 mb2_duel_dotf
+20 mb2_dotf
+20 mb2_duel_emperor
+20 mb2_duel_emperor_fancy
+20 mb2_deathstar
+20 mb2_ctf_deathstar
+20 mb2_ptf_deathstar
+20 mb2_duel_crait
+20 mb2_duel_crait_alt
+20 mb2_duel_supremacy
+20 mb2_coruscant_chase
+20 mb2_duel_office
+20 mb2_duel_senate
+20 mb2_duel_corellia
+20 mb2_corellia
+20 mb2_commtower_classic
+20 mb2_commtower
+20 mb2_cmp_hotfo
+20 mb2_cmp_jedha
+20 mb2_cmp_kashyyyk
+20 mb2_cmp_lab
+20 mb2_cmp_massassi
+20 mb2_cmp_mountainkeep
+20 mb2_cmp_poolday
+20 mb2_cmp_poolparty
+20 mb2_cmp_prison
+20 mb2_cmp_raxus
+20 mb2_cmp_reactor
+20 mb2_cmp_rescue
+20 mb2_cmp_narshaddaa
+20 mb2_cmp_ctf_ascension
+20 mb2_cmp_theedstreets
+20 mb2_cmp_zombiehorror
+20 mb2_cmp_duel_calodan
+20 mb2_cmp_arctic
+20 mb2_cmp_arena
+20 mb2_cmp_assault
+20 mb2_cmp_cislabs
+20 mb2_cmp_coruscantuc
+20 mb2_cmp_deltaprime
+20 mb2_cmp_doomgiver
+20 mb2_cmp_duel_vengeance
+20 mb2_cmp_duel_vjun
+20 mb2_cmp_dust2
+20 mb2_cmp_endor
+20 mb2_cmp_fdepot
+20 mb2_cmp_geocanyons
+20 mb2_cmp_hotel
+20 mb2_cmp_telos
+20 mb2_duel_cc
+20 mb2_cloudcity
+20 mb2_boc
+20 mb2_duel_boc
+20 mb2_duel_ihod
+20 mb2_alderaan
+20 legosw
+20 300_thermopylae
+20 aliens
+20 aliens2
+20 aliens3
+20 cod4_tanker
+20 dc_universe
+20 de_dust2
+20 ffviiac_church
+20 ffvii_shinrahq
+20 fifa
+20 fy_poolday
+20 fy_poolparty
+20 halo_bc
+20 halo_for
+20 jp_siteb
+20 lotr_helmsdeep
+20 matrix_bbrawl
+20 matrix_lobby
+20 mgs1_ninja
+20 mgs1_ocelot
+20 mgs2_agear
+20 mgs2_fortune
+20 mgsvr
+20 mk_deadpool
+20 monster_forest
+20 pokemon
+20 re_mansion
+20 shogun
+20 slender
+20 sm3_venom
+20 ssb_pkmnstadium
+20 tmnt
+20 ultimate_showdown
+20 ww2_omaha
+20 halo_ctf_bc
+20 mp/ctf1
+20 mp/ctf2
+20 mp/ctf4
+20 mp/ctf5
+20 academy1
+20 academy2
+20 academy3
+20 academy4
+20 academy5
+20 academy6
+20 hoth2
+20 hoth3
+20 kor1
+20 kor2
+20 mp/ctf3
+20 mp/duel1
+20 mp/duel10
+20 mp/duel2
+20 mp/duel3
+20 mp/duel4
+20 mp/duel5
+20 mp/duel6
+20 mp/duel7
+20 mp/duel8
+20 mp/duel9
+20 mp/ffa1
+20 mp/ffa2
+20 mp/ffa3
+20 mp/ffa4
+20 mp/ffa5
+20 mp/siege_desert
+20 mp/siege_hoth
+20 mp/siege_korriban
+20 t1_danger
+20 t1_fatal
+20 t1_inter
+20 t1_rail
+20 t1_sour
+20 t1_surprise
+20 t2_dpred
+20 t2_rancor
+20 t2_rogue
+20 t2_trip
+20 t2_wedge
+20 t3_bounty
+20 t3_byss
+20 t3_hevil
+20 t3_rift
+20 t3_stamp
+20 taspir1
+20 taspir2
+20 vjun1
+20 vjun2
+20 vjun3
+20 yavin1
+20 yavin1b
+20 yavin2
+20 duel_bespin
+20 duel_hangar
+20 duel_temple
+20 duel_training
+20 artus_detention
+20 artus_mine
+20 artus_topside
+20 bespin_platform
+20 bespin_streets
+20 bespin_undercity
+20 cairn_assembly
+20 cairn_bay
+20 cairn_dock1
+20 cairn_reactor
+20 ctf_bespin
+20 ctf_imperial
+20 ctf_ns_streets
+20 ctf_yavin
+20 doom_comm
+20 doom_detention
+20 doom_shields
+20 duel_bay
+20 duel_carbon
+20 duel_jedi
+20 duel_pit
+20 ffa_bespin
+20 ffa_deathstar
+20 ffa_imperial
+20 ffa_ns_hideout
+20 ffa_ns_streets
+20 ffa_raven
+20 ffa_yavin
+20 kejim_base
+20 kejim_post
+20 ns_hideout
+20 ns_starpad
+20 ns_streets
+20 pit
+20 valley
+20 yavin_canyon
+20 yavin_courtyard
+20 yavin_final
+20 yavin_swamp
+20 yavin_temple
+20 yavin_trial
+20 test

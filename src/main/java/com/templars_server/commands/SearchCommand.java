@@ -1,6 +1,6 @@
 package com.templars_server.commands;
 
-import com.templars_server.Context;
+import com.templars_server.model.Context;
 import com.templars_server.Voting;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
@@ -26,7 +26,7 @@ public class SearchCommand extends Command<Context> {
     protected void onExecute(int slot, Context context) throws InvalidArgumentException {
         RconClient rcon = context.getRconClient();
         String query = getArg(0);
-        List<String> maps = context.getMaps().stream()
+        List<String> maps = context.getMaps().keySet().stream()
                 .filter(map -> map.contains(query))
                 .limit(pageSize)
                 .collect(Collectors.toList());

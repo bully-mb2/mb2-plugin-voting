@@ -1,6 +1,9 @@
 package com.templars_server;
 
 import com.templars_server.commands.*;
+import com.templars_server.model.Context;
+import com.templars_server.model.GameMap;
+import com.templars_server.model.Player;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -14,6 +17,7 @@ import java.util.List;
 public class Voting {
 
     public static final String PREFIX = "^2Vote » ^7";
+    public static final int DEFAULT_MAX_ROUNDS = 20;
     private static final Logger LOG = LoggerFactory.getLogger(Voting.class);
     private static final int PAGE_SIZE = 24;
 
@@ -45,7 +49,7 @@ public class Voting {
         LOG.info("Setting up admin commands:");
         adminCommands.clear();
         adminCommands.add(new PollCommand());
-        adminCommands.add(new ForceRTVCommand());
+        adminCommands.add(new ForceRtvCommand());
         for (Command<Context> command : adminCommands) {
             LOG.info("    - " + command.getClass().getSimpleName());
         }
@@ -62,35 +66,47 @@ public class Voting {
 
     void onClientConnectEvent(ClientConnectEvent event) {
         putPlayer(event.getSlot(), event.getName());
-        LOG.debug("Player " + event.getSlot() + " connected");
     }
 
     void onClientDisconnectEvent(ClientDisconnectEvent event) {
         context.getPlayers().remove(event.getSlot());
-        LOG.debug("Player " + event.getSlot() + " disconnected");
     }
 
     void onServerInitializationEvent(ServerInitializationEvent event) {
+        LOG.info("Server init detected, resetting context and cancelling votes");
         context.reset();
-        LOG.debug("Players and Nominations cleared");
     }
 
     void onInitGameEvent(InitGameEvent event) {
-        context.setCurrentMap(event.getMapName());
-        String nextMap = context.getNextMap();
-        if (!nextMap.isEmpty()) {
-            rcon.send("map \"" + nextMap +"\"");
-            context.setNextMap("");
+        GameMap nextMap = context.getNextMap();
+        if (nextMap != null) {
+            LOG.info("New round with next map set, switching to " + nextMap.getName());
+            rcon.send("map \"" + nextMap.getName() +"\"");
+            context.setNextMap(null);
+            return;
         }
 
-        LOG.debug("Map registered " + context.getCurrentMap());
+        GameMap gameMap = context.getMapByName(event.getMapName());
+        context.setCurrentMap(gameMap);
+        LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+        if (!context.isVoting()) {
+            rcon.printConAll(PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+        }
     }
 
     void onShutdownGameEvent(ShutdownGameEvent event) {
-        String nextMap = context.getNextMap();
-        if (!nextMap.isEmpty()) {
-            rcon.send("map \"" + nextMap +"\"");
-            context.setNextMap("");
+        context.addRounds(1);
+        int maxRounds = DEFAULT_MAX_ROUNDS;
+        if (context.getCurrentMap() != null) {
+            maxRounds = context.getCurrentMap().getMaxRounds();
+        }
+
+        int round = context.getRound();
+        if (round > maxRounds && !context.isVoting()) {
+            LOG.info("Round limit reached, starting vote");
+            rcon.printAll(PREFIX + "Round limit reached");
+            RtvCommand.startVote(context, rcon);
+            context.setRound(1);
         }
     }
 
@@ -99,6 +115,7 @@ public class Voting {
         for (Command<Context> command : adminCommands) {
             try {
                 if (command.execute(-1, message, context)) {
+                    LOG.info("Executed admin command " + command.getClass().getSimpleName());
                     break;
                 }
             } catch (InvalidArgumentException e) {
@@ -120,6 +137,7 @@ public class Voting {
         for (Command<Context> command : commands) {
             try {
                 if (command.execute(event.getSlot(), message, context)) {
+                    LOG.info("Executed user command " + command.getClass().getSimpleName() + " for player " + event.getSlot() + " " + event.getName());
                     break;
                 }
             } catch (InvalidArgumentException e) {

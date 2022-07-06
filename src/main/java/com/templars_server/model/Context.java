@@ -1,5 +1,6 @@
-package com.templars_server;
+package com.templars_server.model;
 
+import com.templars_server.Voting;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.Vote;
 
@@ -11,25 +12,27 @@ public class Context {
 
     private static final int MAX_MESSAGE_LENGTH = 118;
     private final RconClient rconClient;
-    private final List<String> maps;
+    private final Map<String, GameMap> maps;
     private final Map<Integer, Player> players;
-    private String currentMap;
-    private String nextMap;
+    private int round;
+    private GameMap currentMap;
+    private GameMap nextMap;
     private Vote vote;
 
-    public Context(RconClient rconClient, List<String> maps) {
+    public Context(RconClient rconClient, Map<String, GameMap> maps) {
         this.rconClient = rconClient;
         this.maps = maps;
         this.players = new HashMap<>();
-        this.currentMap = "";
-        this.nextMap = "";
+        this.round = 0;
+        this.currentMap = null;
+        this.nextMap = null;
     }
 
     public RconClient getRconClient() {
         return rconClient;
     }
 
-    public List<String> getMaps() {
+    public Map<String, GameMap> getMaps() {
         return maps;
     }
 
@@ -37,19 +40,38 @@ public class Context {
         return players;
     }
 
-    public String getCurrentMap() {
+    public int getRound() {
+        return round;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public void addRounds(int round) {
+        this.round += round;
+    }
+
+    public GameMap getMapByName(String mapName) {
+        return getMaps().getOrDefault(
+                mapName,
+                new GameMap(mapName, Voting.DEFAULT_MAX_ROUNDS)
+        );
+    }
+
+    public GameMap getCurrentMap() {
         return currentMap;
     }
 
-    public void setCurrentMap(String currentMap) {
+    public void setCurrentMap(GameMap currentMap) {
         this.currentMap = currentMap;
     }
 
-    public String getNextMap() {
+    public GameMap getNextMap() {
         return nextMap;
     }
 
-    public void setNextMap(String nextMap) {
+    public void setNextMap(GameMap nextMap) {
         this.nextMap = nextMap;
     }
 
@@ -75,8 +97,10 @@ public class Context {
             vote.cancel();
             vote = null;
         }
-        currentMap = "";
-        nextMap = "";
+
+        round = 0;
+        currentMap = null;
+        nextMap = null;
     }
 
     // TODO :: Very unhappy about this placement but I can't be bothered to move it somewhere less common

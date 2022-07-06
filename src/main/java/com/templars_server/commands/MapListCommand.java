@@ -1,7 +1,7 @@
 package com.templars_server.commands;
 
-import com.templars_server.Context;
 import com.templars_server.Voting;
+import com.templars_server.model.Context;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -32,7 +32,8 @@ public class MapListCommand extends Command<Context> {
 
         page = Math.abs(page);
         long skipped = (long) (page-1) * pageSize;
-        List<String> result = context.getMaps().stream()
+        List<String> result = context.getMaps().keySet()
+                .stream()
                 .skip(skipped)
                 .limit(pageSize)
                 .collect(Collectors.toList());

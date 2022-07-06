@@ -7,13 +7,14 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Vote implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Vote.class);
     public static final int MAX_CHOICES = 6;
-    private static final int VOTE_DURATION_SECONDS = 20;
-    private static final int VOTE_STEPS = 5;
+    private static final int[] VOTE_DURATION = new int[]{60, 30, 30};
+    private static final int[] REVOTE_DURATION = new int[]{30, 30, 30};
     private static final int REVOTE_THRESHOLD = 0;
 
     private final String prefix;
@@ -36,6 +37,7 @@ public class Vote implements Runnable {
 
     public void start() {
         thread.start();
+        LOG.info(getName() + " started");
     }
 
     public boolean isAlive() {
@@ -45,12 +47,14 @@ public class Vote implements Runnable {
     public synchronized void cancel() {
         canceled = true;
         thread.interrupt();
+        LOG.info(getName() + " cancelled");
     }
 
     @Override
     public void run() {
         int attempt = 1;
         do {
+            LOG.info(getName() + " attempt " + attempt);
             runVote(attempt++);
         } while(!isVoteFinished());
     }
@@ -70,33 +74,41 @@ public class Vote implements Runnable {
     }
 
     private void runVote(int attempt) {
-        int duration = VOTE_DURATION_SECONDS;
-        int stepSize = VOTE_DURATION_SECONDS / VOTE_STEPS;
+        int[] duration = VOTE_DURATION;
+        if (attempt > 1) {
+            duration = REVOTE_DURATION;
+        }
+
         List<String> choices = this.choices.stream()
                 .limit(Vote.MAX_CHOICES)
                 .distinct()
                 .collect(Collectors.toList());
         if (attempt > 1) {
-            rcon.printAll(prefix + "Voting round ^3" + attempt + "^7 begun. Type !number to vote. Voting will complete in " + makeTimeString(duration));
+            rcon.printAll(prefix + "Voting round ^3" + attempt + "^7 begun. Type !number to vote. Voting will complete in " + makeTimeString(timeLeft(0, duration)));
         } else {
-            rcon.printAll(prefix + "Voting has begun. Type !number to vote. Voting will complete in " + makeTimeString(duration));
+            rcon.printAll(prefix + "Voting has begun. Type !number to vote. Voting will complete in " + makeTimeString(timeLeft(0, duration)));
         }
 
         rcon.printAll(prefix + makeChoicesString(choices, null));
-        while (duration > 0){
+        for (int step=0; step<duration.length; step++){
             try {
-                Thread.sleep(stepSize * 1000);
+                Thread.sleep(duration[step] * 1000L);
             } catch (InterruptedException e) {
-                cancelVote();
+                cancel();
                 return;
             }
 
-            duration -= stepSize;
-            if (duration > 0) {
-                rcon.printAll(prefix + "Type !number to vote. Voting will complete in " + makeTimeString(duration));
+            if (step+1 < duration.length) {
+                rcon.printAll(prefix + "Type !number to vote. Voting will complete in " + makeTimeString(timeLeft(step+1, duration)));
                 rcon.printAll(prefix + makeChoicesString(choices, votes));
             }
         }
+    }
+
+    private int timeLeft(int step, int[] duration) {
+       return IntStream.of(duration)
+               .skip(step)
+               .sum();
     }
 
     private boolean isVoteFinished() {
@@ -141,23 +153,19 @@ public class Vote implements Runnable {
     }
 
     private void completeVote(String winner, int votes) {
+        LOG.info(getName() + " completing, " + winner + " won with " + votes + " votes");
+        if (canceled) {
+            LOG.info("Vote was cancelled");
+            return;
+        }
+
         if (votes < 1) {
             rcon.printAll(prefix + "No votes have been cast");
         } else {
             rcon.printAll(prefix + makeChoicesString(choices, this.votes));
             rcon.printAll(prefix + winner + " wins with " + makeVoteString(votes));
         }
-
-        if (canceled) {
-            LOG.info("Vote concluded but was cancelled, winner: " + winner);
-        } else {
-            callback.onVoteComplete(winner);
-        }
-    }
-
-    private void cancelVote() {
-        cancel();
-        rcon.printAll(prefix + "Vote cancelled");
+        callback.onVoteComplete(winner);
     }
 
     private int tallyVotes(int choice) {
@@ -218,6 +226,10 @@ public class Vote implements Runnable {
             }
         }
         return builder.toString();
+    }
+
+    private String getName() {
+        return thread.getName() + "-" + thread.getId();
     }
 
 }

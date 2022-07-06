@@ -1,12 +1,12 @@
 package com.templars_server.commands;
 
-import com.templars_server.Context;
-import com.templars_server.Player;
 import com.templars_server.Voting;
+import com.templars_server.model.Context;
+import com.templars_server.model.Player;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 
-import java.util.List;
+import java.util.Set;
 
 public class NominateCommand extends PreVoteCommand {
 
@@ -25,14 +25,14 @@ public class NominateCommand extends PreVoteCommand {
             return;
         }
 
-        if (!context.getNextMap().isEmpty()) {
+        if (context.getNextMap() != null) {
             rcon.print(slot, Voting.PREFIX + "Vote already ended, switching to " + context.getNextMap() + " next round");
             return;
         }
 
         String nomination = getArg(0).toLowerCase();
         Player player = context.getPlayers().get(slot);
-        List<String> mapList = context.getMaps();
+        Set<String> mapList = context.getMaps().keySet();
         if (!mapList.contains(nomination)) {
             rcon.print(slot, Voting.PREFIX + "Map not found");
             return;
