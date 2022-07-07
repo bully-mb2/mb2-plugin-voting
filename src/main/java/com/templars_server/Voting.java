@@ -23,12 +23,14 @@ public class Voting {
 
     private final Context context;
     private final RconClient rcon;
+    private final int defaultMBMode;
     private final List<Command<Context>> commands;
     private final List<Command<Context>> adminCommands;
 
-    public Voting(Context context, RconClient rcon) {
+    public Voting(Context context, RconClient rcon, int defaultMBMode) {
         this.context = context;
         this.rcon = rcon;
+        this.defaultMBMode = defaultMBMode;
         this.commands = new ArrayList<>();
         this.adminCommands = new ArrayList<>();
     }
@@ -78,19 +80,20 @@ public class Voting {
     }
 
     void onInitGameEvent(InitGameEvent event) {
-        GameMap nextMap = context.getNextMap();
-        if (nextMap != null) {
-            LOG.info("New round with next map set, switching to " + nextMap.getName());
-            rcon.send("map \"" + nextMap.getName() +"\"");
-            context.setNextMap(null);
-            return;
-        }
-
         GameMap gameMap = context.getMapByName(event.getMapName());
         context.setCurrentMap(gameMap);
         LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
         if (!context.isVoting()) {
             rcon.printConAll(PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+        }
+    }
+
+    void onSendingGameReportEvent(SendingGameReportEvent event) {
+        GameMap nextMap = context.getNextMap();
+        if (nextMap != null) {
+            LOG.info("New round with next map set, switching to " + nextMap.getName());
+            rcon.mode(defaultMBMode, nextMap.getName());
+            context.reset();
         }
     }
 
