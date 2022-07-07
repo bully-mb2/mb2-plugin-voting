@@ -89,7 +89,8 @@ public class Application {
         LOG.info("Setting up voting");
         Voting voting = new Voting(
                 context,
-                rcon
+                rcon,
+                settings.getInt("voting.default.mbmode")
         );
         voting.setup();
 
@@ -98,7 +99,7 @@ public class Application {
         client.putEventListener(voting::onClientConnectEvent, ClientConnectEvent.class);
         client.putEventListener(voting::onClientDisconnectEvent, ClientDisconnectEvent.class);
         client.putEventListener(voting::onInitGameEvent, InitGameEvent.class);
-        client.putEventListener(voting::onShutdownGameEvent, ShutdownGameEvent.class);
+        client.putEventListener(voting::onSendingGameReportEvent, SendingGameReportEvent.class);
         client.putEventListener(voting::onSayEvent, SayEvent.class);
         client.putEventListener(voting::onAdminSayEvent, AdminSayEvent.class);
         client.putEventListener(voting::onServerInitializationEvent, ServerInitializationEvent.class);
