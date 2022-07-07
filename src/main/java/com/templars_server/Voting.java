@@ -95,9 +95,7 @@ public class Voting {
             rcon.mode(defaultMBMode, nextMap.getName());
             context.reset();
         }
-    }
 
-    void onShutdownGameEvent(ShutdownGameEvent event) {
         context.addRounds(1);
         int maxRounds = DEFAULT_MAX_ROUNDS;
         if (context.getCurrentMap() != null) {
