@@ -2,6 +2,7 @@ package com.templars_server.commands;
 
 import com.templars_server.Voting;
 import com.templars_server.model.Context;
+import com.templars_server.model.GameMap;
 import com.templars_server.model.Player;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -36,6 +37,14 @@ public class NominateCommand extends PreVoteCommand {
         if (!mapList.contains(nomination)) {
             rcon.print(slot, Voting.PREFIX + "Map not found");
             return;
+        }
+
+        GameMap gameMap = context.getCurrentMap();
+        if (gameMap != null) {
+            if (nomination.equals(gameMap.getName())) {
+                rcon.print(slot, Voting.PREFIX + "You are already on this map");
+                return;
+            }
         }
 
         String oldNomination = player.getNomination();
