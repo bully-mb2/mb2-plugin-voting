@@ -21,7 +21,7 @@ public abstract class PreVoteCommand extends Command<Context> {
         }
 
         if (context.getNextMap() != null) {
-            rcon.print(slot, Display.PREFIX + "Vote already ended, switching to " + context.getNextMap() + " next round");
+            rcon.print(slot, Display.PREFIX + "Vote already ended, switching to " + context.getNextMap().getName() + " next round");
             return;
         }
 
