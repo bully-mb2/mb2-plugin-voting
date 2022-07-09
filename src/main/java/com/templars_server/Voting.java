@@ -56,14 +56,7 @@ public class Voting {
             LOG.info("    - " + command.getClass().getSimpleName());
         }
 
-        LOG.info("Setting cvar and announcing it has been launched");
-        String version = getClass().getPackage().getImplementationVersion();
-        if (version == null) {
-            version = "dev";
-        }
-
-        rcon.send("sets RTVRTM 3807/" + version);
-        rcon.printAll(Display.PREFIX + "Voting is now enabled");
+        printReady();
     }
 
     void onClientConnectEvent(ClientConnectEvent event) {
@@ -77,6 +70,7 @@ public class Voting {
     void onServerInitializationEvent(ServerInitializationEvent event) {
         LOG.info("Server init detected, resetting context and cancelling votes");
         context.reset();
+        printReady();
     }
 
     void onInitGameEvent(InitGameEvent event) {
@@ -155,6 +149,17 @@ public class Voting {
             context.getPlayers().put(slot, new Player(slot, name));
             LOG.debug("Player " + slot + " inserted");
         }
+    }
+
+    private void printReady() {
+        LOG.info("Setting cvar and announcing it is ready");
+        String version = getClass().getPackage().getImplementationVersion();
+        if (version == null) {
+            version = "dev";
+        }
+
+        rcon.send("sets RTVRTM 3807/" + version);
+        rcon.printAll(Display.PREFIX + "Voting is now enabled");
     }
 
 }
