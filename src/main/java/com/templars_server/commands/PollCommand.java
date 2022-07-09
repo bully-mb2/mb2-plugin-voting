@@ -38,7 +38,7 @@ public class PollCommand extends Command<Context> {
             throw new InvalidArgumentException();
         }
 
-        Vote vote = new Vote(Display.PREFIX, args, rcon, (result) -> onVoteComplete(result, rcon, context));
+        Vote vote = new Vote(Display.PREFIX, args, context, (result) -> onVoteComplete(result, rcon, context));
         vote.start();
         context.setVote(vote);
     }

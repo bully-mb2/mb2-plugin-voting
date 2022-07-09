@@ -99,7 +99,7 @@ public class RtvCommand extends PreVoteCommand {
 
 
         nominations.add(DONT_CHANGE);
-        return new Vote(Display.PREFIX, nominations, rcon, (result) -> {
+        return new Vote(Display.PREFIX, nominations, context, (result) -> {
             onVoteComplete(result, rcon, context);
         });
     }
