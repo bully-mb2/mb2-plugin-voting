@@ -4,6 +4,7 @@ import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
 import com.templars_server.model.Player;
 import com.templars_server.Voting;
+import com.templars_server.render.Display;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.Vote;
@@ -48,16 +49,16 @@ public class RtvCommand extends PreVoteCommand {
         int threshold = (int) Math.ceil(players.size() * THRESHOLD_PERCENTAGE);
         if (player.isRtv()) {
             if (before) {
-                rcon.printAll(String.format("%s%s^7 really wants you to rock the vote (%d/%d)", Voting.PREFIX, players.get(slot).getName(), voters, threshold));
+                rcon.printAll(String.format("%s%s^7 really wants you to rock the vote (%d/%d)", Display.PREFIX, players.get(slot).getName(), voters, threshold));
             } else {
-                rcon.printAll(String.format("%s%s^7 wants to rock the vote (%d/%d)", Voting.PREFIX, players.get(slot).getName(), voters, threshold));
+                rcon.printAll(String.format("%s%s^7 wants to rock the vote (%d/%d)", Display.PREFIX, players.get(slot).getName(), voters, threshold));
             }
         } else {
             if (before) {
-                rcon.printAll(String.format("%s%s^7 no longer wants to rock the vote (%d/%d)", Voting.PREFIX, players.get(slot).getName(), voters, threshold));
+                rcon.printAll(String.format("%s%s^7 no longer wants to rock the vote (%d/%d)", Display.PREFIX, players.get(slot).getName(), voters, threshold));
                 return;
             } else {
-                rcon.print(slot, String.format("%sYou haven't rocked the vote yet (%d/%d)", Voting.PREFIX, voters, threshold));
+                rcon.print(slot, String.format("%sYou haven't rocked the vote yet (%d/%d)", Display.PREFIX, voters, threshold));
             }
         }
 
@@ -98,7 +99,7 @@ public class RtvCommand extends PreVoteCommand {
 
 
         nominations.add(DONT_CHANGE);
-        return new Vote(Voting.PREFIX, nominations, rcon, (result) -> {
+        return new Vote(Display.PREFIX, nominations, rcon, (result) -> {
             onVoteComplete(result, rcon, context);
         });
     }
@@ -118,7 +119,7 @@ public class RtvCommand extends PreVoteCommand {
             gameMap = new GameMap(result, Voting.DEFAULT_MAX_ROUNDS);
         }
 
-        rcon.printAll(Voting.PREFIX + "Switching to map " + result + " next round");
+        rcon.printAll(Display.PREFIX + "Switching to map " + result + " next round");
         context.setNextMap(gameMap);
     }
 

@@ -1,7 +1,7 @@
 package com.templars_server.commands;
 
 import com.templars_server.model.Context;
-import com.templars_server.Voting;
+import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 
@@ -18,7 +18,7 @@ public class VoteCommand extends Command<Context> {
     @Override
     protected void onExecute(int slot, Context context) throws InvalidArgumentException {
         if (!context.isVoting()) {
-            context.getRconClient().print(slot, Voting.PREFIX + "There is no vote going on");
+            context.getRconClient().print(slot, Display.PREFIX + "There is no vote going on");
             return;
         }
 

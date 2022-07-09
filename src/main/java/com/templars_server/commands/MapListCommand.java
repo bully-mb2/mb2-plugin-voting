@@ -1,6 +1,5 @@
 package com.templars_server.commands;
 
-import com.templars_server.Voting;
 import com.templars_server.model.Context;
 import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
@@ -45,9 +44,9 @@ public class MapListCommand extends Command<Context> {
             return;
         }
 
-        Display.renderMaps(Voting.PREFIX, result).forEach(line -> rcon.print(slot, line));
+        Display.renderMaps(result).forEach(line -> rcon.print(slot, line));
         int pages = context.getMaps().size() / pageSize + 1;
-        rcon.print(slot, String.format("%sPage %d/%d - %s", Voting.PREFIX, page, pages, getUsage()));
+        rcon.print(slot, String.format("%sPage %d/%d - %s", Display.PREFIX, page, pages, getUsage()));
     }
 
 }

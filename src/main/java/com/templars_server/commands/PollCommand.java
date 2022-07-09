@@ -1,7 +1,7 @@
 package com.templars_server.commands;
 
 import com.templars_server.model.Context;
-import com.templars_server.Voting;
+import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -26,7 +26,7 @@ public class PollCommand extends Command<Context> {
     protected void onExecute(int slot, Context context) throws InvalidArgumentException {
         RconClient rcon = context.getRconClient();
         if (context.isVoting()) {
-            rcon.printAll(Voting.PREFIX + "There is already a vote in progress");
+            rcon.printAll(Display.PREFIX + "There is already a vote in progress");
             return;
         }
 
@@ -38,7 +38,7 @@ public class PollCommand extends Command<Context> {
             throw new InvalidArgumentException();
         }
 
-        Vote vote = new Vote(Voting.PREFIX, args, rcon, (result) -> onVoteComplete(result, rcon, context));
+        Vote vote = new Vote(Display.PREFIX, args, rcon, (result) -> onVoteComplete(result, rcon, context));
         vote.start();
         context.setVote(vote);
     }

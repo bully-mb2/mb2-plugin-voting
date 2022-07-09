@@ -4,6 +4,7 @@ import com.templars_server.commands.*;
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
 import com.templars_server.model.Player;
+import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -16,7 +17,6 @@ import java.util.List;
 
 public class Voting {
 
-    public static final String PREFIX = "^2Vote » ^7";
     public static final int DEFAULT_MAX_ROUNDS = 20;
     private static final Logger LOG = LoggerFactory.getLogger(Voting.class);
     private static final int PAGE_SIZE = 24;
@@ -63,7 +63,7 @@ public class Voting {
         }
 
         rcon.send("sets RTVRTM 3807/" + version);
-        rcon.printAll(PREFIX + "Voting is now enabled");
+        rcon.printAll(Display.PREFIX + "Voting is now enabled");
     }
 
     void onClientConnectEvent(ClientConnectEvent event) {
@@ -84,7 +84,7 @@ public class Voting {
         context.setCurrentMap(gameMap);
         LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
         if (!context.isVoting()) {
-            rcon.printConAll(PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+            rcon.printConAll(Display.PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
         }
     }
 
@@ -105,7 +105,7 @@ public class Voting {
         int round = context.getRound();
         if (round > maxRounds && !context.isVoting()) {
             LOG.info("Round limit reached, starting vote");
-            rcon.printAll(PREFIX + "Round limit reached");
+            rcon.printAll(Display.PREFIX + "Round limit reached");
             RtvCommand.startVote(context, rcon);
             context.setRound(1);
         }
@@ -120,7 +120,7 @@ public class Voting {
                     break;
                 }
             } catch (InvalidArgumentException e) {
-                rcon.printAll(PREFIX + command.getUsage());
+                rcon.printAll(Display.PREFIX + command.getUsage());
             } catch (Exception e) {
                 LOG.error("Uncaught exception during command execution", e);
             }
@@ -142,7 +142,7 @@ public class Voting {
                     break;
                 }
             } catch (InvalidArgumentException e) {
-                rcon.print(event.getSlot(), PREFIX + command.getUsage());
+                rcon.print(event.getSlot(), Display.PREFIX + command.getUsage());
             } catch (Exception e) {
                 LOG.error("Uncaught exception during command execution", e);
             }
