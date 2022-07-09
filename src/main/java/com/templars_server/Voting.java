@@ -88,7 +88,7 @@ public class Voting {
         }
     }
 
-    void onSendingGameReportEvent(SendingGameReportEvent event) {
+    void onShutdownGameEvent(ShutdownGameEvent event) {
         GameMap nextMap = context.getNextMap();
         if (nextMap != null) {
             LOG.info("New round with next map set, switching to " + nextMap.getName());
