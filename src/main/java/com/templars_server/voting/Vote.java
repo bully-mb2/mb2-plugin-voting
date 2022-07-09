@@ -1,10 +1,13 @@
 package com.templars_server.voting;
 
+import com.templars_server.model.Context;
 import com.templars_server.util.rcon.RconClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,16 +23,18 @@ public class Vote implements Runnable {
     private final String prefix;
     private final List<String> choices;
     private final Map<Integer, Integer> votes;
+    private final Context context;
     private final RconClient rcon;
     private final VoteCallback callback;
     private final Thread thread;
     private volatile boolean canceled;
 
-    public Vote(String prefix, List<String> choices, RconClient rcon, VoteCallback callback) {
+    public Vote(String prefix, List<String> choices, Context context, VoteCallback callback) {
         this.prefix = prefix;
         this.choices = choices;
         this.votes = new ConcurrentHashMap<>();
-        this.rcon = rcon;
+        this.context = context;
+        this.rcon = context.getRconClient();
         this.callback = callback;
         this.thread = new Thread(this, "Vote-Thread");
         this.canceled = false;
@@ -59,8 +64,14 @@ public class Vote implements Runnable {
         } while(!isVoteFinished());
     }
 
-    public synchronized void vote(int slot, int vote) {
+    public synchronized void vote(int slot, Integer vote) {
+        if (vote == null) {
+            votes.remove(slot);
+            return;
+        }
+
         if (vote < 0 || vote >= choices.size()) {
+            rcon.print(slot, prefix + "Invalid choice");
             return;
         }
 
@@ -70,6 +81,11 @@ public class Vote implements Runnable {
             rcon.print(slot, prefix + "Invalid choice");
         } else {
             rcon.print(slot, prefix + "Vote cast for " + choice + ", now " + makeVoteString(tallyVotes(vote)));
+            if (votes.size() >= context.getPlayers().size()) {
+                LOG.info(votes.size() + " / " + context.getPlayers().size() + " voted, interrupting vote thread and finishing the vote");
+                rcon.printAll(prefix + "Everyone has voted!");
+                thread.interrupt();
+            }
         }
     }
 
@@ -94,7 +110,6 @@ public class Vote implements Runnable {
             try {
                 Thread.sleep(duration[step] * 1000L);
             } catch (InterruptedException e) {
-                cancel();
                 return;
             }
 

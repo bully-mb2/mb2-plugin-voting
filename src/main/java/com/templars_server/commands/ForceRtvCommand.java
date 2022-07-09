@@ -1,7 +1,7 @@
 package com.templars_server.commands;
 
-import com.templars_server.Voting;
 import com.templars_server.model.Context;
+import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -20,7 +20,7 @@ public class ForceRtvCommand extends Command<Context> {
     protected void onExecute(int slot, Context context) throws InvalidArgumentException {
         RconClient rcon = context.getRconClient();
         if (context.isVoting()) {
-            rcon.printAll(Voting.PREFIX + "There is already a vote in progress");
+            rcon.printAll(Display.PREFIX + "There is already a vote in progress");
             return;
         }
 

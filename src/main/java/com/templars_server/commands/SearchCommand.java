@@ -1,7 +1,7 @@
 package com.templars_server.commands;
 
 import com.templars_server.model.Context;
-import com.templars_server.Voting;
+import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
@@ -32,13 +32,13 @@ public class SearchCommand extends Command<Context> {
                 .collect(Collectors.toList());
 
         if (maps.isEmpty()) {
-            rcon.print(slot, Voting.PREFIX + "No maps found");
+            rcon.print(slot, Display.PREFIX + "No maps found");
             return;
         }
 
-        context.printMaps(slot, rcon, maps, Voting.PREFIX);
+        Display.renderMaps(maps).forEach(line -> rcon.print(slot, line));
         if (maps.size() == pageSize) {
-            rcon.print(slot, Voting.PREFIX + "Search result too large, try being more specific");
+            rcon.print(slot, Display.PREFIX + "Search result too large, try being more specific");
         }
     }
 
