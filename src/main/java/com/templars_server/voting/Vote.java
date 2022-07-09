@@ -64,7 +64,12 @@ public class Vote implements Runnable {
         } while(!isVoteFinished());
     }
 
-    public synchronized void vote(int slot, int vote) {
+    public synchronized void vote(int slot, Integer vote) {
+        if (vote == null) {
+            votes.remove(slot);
+            return;
+        }
+
         if (vote < 0 || vote >= choices.size()) {
             rcon.print(slot, prefix + "Invalid choice");
             return;

@@ -65,6 +65,10 @@ public class Voting {
 
     void onClientDisconnectEvent(ClientDisconnectEvent event) {
         context.getPlayers().remove(event.getSlot());
+        if (context.isVoting()) {
+            LOG.info(event.getSlot() + " disconnected during vote, removing from list");
+            context.getVote().vote(event.getSlot(), null);
+        }
     }
 
     void onServerInitializationEvent(ServerInitializationEvent event) {
