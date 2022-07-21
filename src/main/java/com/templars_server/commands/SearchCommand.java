@@ -36,7 +36,8 @@ public class SearchCommand extends Command<Context> {
             return;
         }
 
-        Display.renderMaps(maps).forEach(line -> rcon.print(slot, line));
+        rcon.print(slot, Display.PREFIX + "Search result printed to console, press (ALT + ~) to view");
+        Display.renderMaps(maps).forEach(line -> rcon.printCon(slot, line));
         if (maps.size() == pageSize) {
             rcon.print(slot, Display.PREFIX + "Search result too large, try being more specific");
         }
