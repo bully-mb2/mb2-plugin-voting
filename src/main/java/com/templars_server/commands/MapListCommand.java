@@ -44,9 +44,10 @@ public class MapListCommand extends Command<Context> {
             return;
         }
 
-        Display.renderMaps(result).forEach(line -> rcon.print(slot, line));
+        rcon.print(slot, Display.PREFIX + "Map list printed to console, press (ALT + ~) to view");
+        Display.renderMaps(result).forEach(line -> rcon.printCon(slot, line));
         int pages = context.getMaps().size() / pageSize + 1;
-        rcon.print(slot, String.format("%sPage %d/%d - %s", Display.PREFIX, page, pages, getUsage()));
+        rcon.printCon(slot, String.format("%sPage %d/%d - %s", Display.PREFIX, page, pages, getUsage()));
     }
 
 }

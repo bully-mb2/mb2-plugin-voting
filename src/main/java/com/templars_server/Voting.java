@@ -109,6 +109,10 @@ public class Voting {
         }
     }
 
+    public void onClientUserinfoChangedEvent(ClientUserinfoChangedEvent event) {
+        putPlayer(event.getSlot(), event.getName());
+    }
+
     void onAdminSayEvent(AdminSayEvent event) {
         String message = event.getMessage();
         for (Command<Context> command : adminCommands) {
@@ -152,6 +156,8 @@ public class Voting {
         if (player == null || player.getName() == null) {
             context.getPlayers().put(slot, new Player(slot, name));
             LOG.debug("Player " + slot + " inserted");
+        } else {
+            player.setName(name);
         }
     }
 
