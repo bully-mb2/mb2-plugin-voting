@@ -101,6 +101,7 @@ public class Application {
         client.putEventListener(voting::onInitGameEvent, InitGameEvent.class);
         client.putEventListener(voting::onShutdownGameEvent, ShutdownGameEvent.class);
         client.putEventListener(voting::onSayEvent, SayEvent.class);
+        client.putEventListener(voting::onClientUserinfoChangedEvent, ClientUserinfoChangedEvent.class);
         client.putEventListener(voting::onAdminSayEvent, AdminSayEvent.class);
         client.putEventListener(voting::onServerInitializationEvent, ServerInitializationEvent.class);
 

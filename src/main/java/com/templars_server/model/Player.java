@@ -3,11 +3,11 @@ package com.templars_server.model;
 public class Player {
 
     private final int slot;
-    private final String name;
     private int vote;
     private boolean rtv;
     private boolean rtm;
     private String nomination;
+    private String name;
 
     public Player(int slot, String name) {
         this.slot = slot;
@@ -22,6 +22,10 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getVote() {
