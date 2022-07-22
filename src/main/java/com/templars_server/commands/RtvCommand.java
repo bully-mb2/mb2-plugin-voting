@@ -93,8 +93,10 @@ public class RtvCommand extends PreVoteCommand {
 
         if (nominations.size() < Vote.MAX_CHOICES - 1) {
             List<String> mapChoices = new ArrayList<>(context.getMaps().keySet());
+            String currentMap = context.getCurrentMap() == null ? "" : context.getCurrentMap().getName();
             Collections.shuffle(mapChoices);
             mapChoices = mapChoices.stream()
+                    .filter(choice -> !choice.equals(currentMap))
                     .filter(choice -> context.getMaps().get(choice).getCooldown() < 1)
                     .limit(Vote.MAX_CHOICES - 1 - nominations.size())
                     .collect(Collectors.toList());
