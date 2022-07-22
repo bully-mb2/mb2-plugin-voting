@@ -36,6 +36,8 @@ public class Application {
         LOG.info("Reading properties");
         String uri = "tcp://localhost:" + settings.getInt("mqtt.port");
         String topic = settings.get("mqtt.topic");
+        int defaultCooldown = settings.getInt("voting.default.cooldown");
+        int defaultMBmode = settings.getInt("voting.default.mbmode");
 
         LOG.info("Setting up rcon client");
         RconClient rcon = new RconClient();
@@ -80,7 +82,11 @@ public class Application {
 
         LOG.info("Found " + gameMaps.size() + " maps");
         LOG.info("Fetching current player count");
-        Context context = new Context(rcon, gameMaps);
+        Context context = new Context(
+                rcon,
+                gameMaps,
+                defaultCooldown
+        );
         for (Integer slot : rcon.playerSlots()) {
             context.getPlayers().put(slot, new Player(slot, null));
         }
@@ -90,7 +96,7 @@ public class Application {
         Voting voting = new Voting(
                 context,
                 rcon,
-                settings.getInt("voting.default.mbmode")
+                defaultMBmode
         );
         voting.setup();
 

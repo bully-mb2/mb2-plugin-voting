@@ -12,15 +12,17 @@ public class Context {
     private final RconClient rconClient;
     private final Map<String, GameMap> maps;
     private final Map<Integer, Player> players;
+    private final int defaultCooldown;
     private int round;
     private GameMap currentMap;
     private GameMap nextMap;
     private Vote vote;
 
-    public Context(RconClient rconClient, Map<String, GameMap> maps) {
+    public Context(RconClient rconClient, Map<String, GameMap> maps, int defaultCooldown) {
         this.rconClient = rconClient;
         this.maps = maps;
         this.players = new HashMap<>();
+        this.defaultCooldown = defaultCooldown;
         this.round = 0;
         this.currentMap = null;
         this.nextMap = null;
@@ -36,6 +38,10 @@ public class Context {
 
     public Map<Integer, Player> getPlayers() {
         return players;
+    }
+
+    public int getDefaultCooldown() {
+        return defaultCooldown;
     }
 
     public int getRound() {
