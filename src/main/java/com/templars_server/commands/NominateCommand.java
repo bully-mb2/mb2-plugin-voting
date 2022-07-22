@@ -43,8 +43,9 @@ public class NominateCommand extends PreVoteCommand {
             return;
         }
 
-        if (nominatedMap.getCooldown() > 0) {
-            rcon.print(slot, Display.PREFIX + "That map is on cooldown for ^3" + nominatedMap.getCooldown() + "^7 more maps");
+        int cooldown = nominatedMap.getCooldown();
+        if (cooldown > 0) {
+            rcon.print(slot, Display.PREFIX + "That map is on cooldown for ^3" + cooldown + "^7 more map" + (cooldown > 1 ? "s": ""));
             return;
         }
 
