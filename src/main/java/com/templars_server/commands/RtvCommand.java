@@ -93,7 +93,7 @@ public class RtvCommand extends PreVoteCommand {
 
         if (nominations.size() < Vote.MAX_CHOICES - 1) {
             List<String> mapChoices = new ArrayList<>(context.getMaps().keySet());
-            String currentMap = context.getCurrentMap() == null ? "" : context.getCurrentMap().getName();
+            String currentMap = context.getCurrentMap().getName();
             Collections.shuffle(mapChoices);
             mapChoices = mapChoices.stream()
                     .filter(choice -> !choice.equals(currentMap))
@@ -130,10 +130,7 @@ public class RtvCommand extends PreVoteCommand {
         context.getMaps().values().stream()
                 .filter(map -> map.getCooldown() > 0)
                 .forEach(map -> map.setCooldown(map.getCooldown() - 1));
-        GameMap currentMap = context.getCurrentMap();
-        if (currentMap != null) {
-            context.getCurrentMap().setCooldown(context.getDefaultCooldown());
-        }
+        context.getCurrentMap().setCooldown(context.getDefaultCooldown());
 
         rcon.printAll(Display.PREFIX + "Switching to map " + result + " next round");
         context.setNextMap(gameMap);

@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class Context {
 
+    private static final GameMap INIT_MAP = new GameMap("Voting restarted, loading...", 99);
+
     private final RconClient rconClient;
     private final Map<String, GameMap> maps;
     private final Map<Integer, Player> players;
@@ -24,7 +26,7 @@ public class Context {
         this.players = new HashMap<>();
         this.defaultCooldown = defaultCooldown;
         this.round = 0;
-        this.currentMap = null;
+        this.currentMap = INIT_MAP;
         this.nextMap = null;
     }
 
@@ -103,7 +105,7 @@ public class Context {
         }
 
         round = 0;
-        currentMap = null;
+        currentMap = INIT_MAP;
         nextMap = null;
     }
 

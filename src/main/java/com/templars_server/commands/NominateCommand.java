@@ -38,11 +38,9 @@ public class NominateCommand extends PreVoteCommand {
         }
 
         GameMap gameMap = context.getCurrentMap();
-        if (gameMap != null) {
-            if (nomination.equals(gameMap.getName())) {
-                rcon.print(slot, Display.PREFIX + "You are already on that map");
-                return;
-            }
+        if (nomination.equals(gameMap.getName())) {
+            rcon.print(slot, Display.PREFIX + "You are already on that map");
+            return;
         }
 
         if (nominatedMap.getCooldown() > 0) {
