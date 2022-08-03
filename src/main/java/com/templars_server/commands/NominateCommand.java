@@ -7,8 +7,6 @@ import com.templars_server.render.Display;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 
-import java.util.Set;
-
 public class NominateCommand extends PreVoteCommand {
 
     public NominateCommand() {
@@ -33,18 +31,22 @@ public class NominateCommand extends PreVoteCommand {
 
         String nomination = getArg(0).toLowerCase();
         Player player = context.getPlayers().get(slot);
-        Set<String> mapList = context.getMaps().keySet();
-        if (!mapList.contains(nomination)) {
+        GameMap nominatedMap = context.getMaps().get(nomination);
+        if (nominatedMap == null) {
             rcon.print(slot, Display.PREFIX + "Map not found");
             return;
         }
 
         GameMap gameMap = context.getCurrentMap();
-        if (gameMap != null) {
-            if (nomination.equals(gameMap.getName())) {
-                rcon.print(slot, Display.PREFIX + "You are already on this map");
-                return;
-            }
+        if (nomination.equals(gameMap.getName())) {
+            rcon.print(slot, Display.PREFIX + "You are already on that map");
+            return;
+        }
+
+        int cooldown = nominatedMap.getCooldown();
+        if (cooldown > 0) {
+            rcon.print(slot, Display.PREFIX + "That map is on cooldown for ^3" + cooldown + "^7 more map" + (cooldown > 1 ? "s": ""));
+            return;
         }
 
         String oldNomination = player.getNomination();

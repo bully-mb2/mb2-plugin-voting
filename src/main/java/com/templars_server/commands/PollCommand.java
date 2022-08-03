@@ -7,7 +7,6 @@ import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.Vote;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,18 +31,17 @@ public class PollCommand extends Command<Context> {
 
         List<String> args = getArgs().stream()
                 .map(String::stripLeading)
-                .sorted(Comparator.naturalOrder())
                 .collect(Collectors.toList());
         if (args.size() < 2) {
             throw new InvalidArgumentException();
         }
 
-        Vote vote = new Vote(Display.PREFIX, args, context, (result) -> onVoteComplete(result, rcon, context));
+        Vote vote = new Vote(Display.PREFIX, args, context, (result) -> onVoteComplete(context));
         vote.start();
         context.setVote(vote);
     }
 
-    private void onVoteComplete(String result, RconClient rcon, Context context) {
+    private void onVoteComplete(Context context) {
         context.setVote(null);
     }
 

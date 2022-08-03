@@ -9,20 +9,24 @@ import java.util.Map;
 
 public class Context {
 
+    private static final GameMap INIT_MAP = new GameMap("Voting restarted, loading...", 99);
+
     private final RconClient rconClient;
-    private final Map<String, GameMap> maps;
     private final Map<Integer, Player> players;
+    private final int defaultCooldown;
+    private Map<String, GameMap> maps;
     private int round;
     private GameMap currentMap;
     private GameMap nextMap;
     private Vote vote;
 
-    public Context(RconClient rconClient, Map<String, GameMap> maps) {
+    public Context(RconClient rconClient, Map<String, GameMap> maps, int defaultCooldown) {
         this.rconClient = rconClient;
         this.maps = maps;
         this.players = new HashMap<>();
+        this.defaultCooldown = defaultCooldown;
         this.round = 0;
-        this.currentMap = null;
+        this.currentMap = INIT_MAP;
         this.nextMap = null;
     }
 
@@ -34,8 +38,16 @@ public class Context {
         return maps;
     }
 
+    public void setMaps(Map<String, GameMap> maps) {
+        this.maps = maps;
+    }
+
     public Map<Integer, Player> getPlayers() {
         return players;
+    }
+
+    public int getDefaultCooldown() {
+        return defaultCooldown;
     }
 
     public int getRound() {
@@ -97,7 +109,7 @@ public class Context {
         }
 
         round = 0;
-        currentMap = null;
+        currentMap = INIT_MAP;
         nextMap = null;
     }
 

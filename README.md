@@ -28,6 +28,8 @@ Admin commands: triggered by /smod say <command>
     - Start a poll with the specified options
 !forcertv
     - Force a vote to change the map
+!reloadmaps
+    - Reload the map list
 ```
 
 ## Configuration

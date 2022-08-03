@@ -1,19 +1,22 @@
 package com.templars_server.commands;
 
+import com.templars_server.Voting;
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
 import com.templars_server.model.Player;
-import com.templars_server.Voting;
 import com.templars_server.render.Display;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.Vote;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class RtvCommand extends PreVoteCommand {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RtvCommand.class);
     private static final float THRESHOLD_PERCENTAGE = 0.5f;
     private static final String DONT_CHANGE = "Don't change";
 
@@ -67,13 +70,13 @@ public class RtvCommand extends PreVoteCommand {
         }
     }
 
+    // TODO :: Messy, should probably move it to a MapVoteBuilder or something
     public static void startVote(Context context, RconClient rcon) {
         Vote vote = makeVote(context, rcon);
         vote.start();
         context.setVote(vote);
     }
 
-    // TODO :: Messy, should probably move it to a MapVoteBuilder or something
     private static Vote makeVote(Context context, RconClient rcon) {
         Map<Integer, Player> players = context.getPlayers();
         players.values().forEach(player -> player.setRtv(false));
@@ -90,8 +93,11 @@ public class RtvCommand extends PreVoteCommand {
 
         if (nominations.size() < Vote.MAX_CHOICES - 1) {
             List<String> mapChoices = new ArrayList<>(context.getMaps().keySet());
+            String currentMap = context.getCurrentMap().getName();
             Collections.shuffle(mapChoices);
             mapChoices = mapChoices.stream()
+                    .filter(choice -> !choice.equals(currentMap))
+                    .filter(choice -> context.getMaps().get(choice).getCooldown() < 1)
                     .limit(Vote.MAX_CHOICES - 1 - nominations.size())
                     .collect(Collectors.toList());
             nominations.addAll(mapChoices);
@@ -99,9 +105,7 @@ public class RtvCommand extends PreVoteCommand {
 
 
         nominations.add(DONT_CHANGE);
-        return new Vote(Display.PREFIX, nominations, context, (result) -> {
-            onVoteComplete(result, rcon, context);
-        });
+        return new Vote(Display.PREFIX, nominations, context, (result) -> onVoteComplete(result, rcon, context));
     }
 
     private static void onVoteComplete(String result, RconClient rcon, Context context) {
@@ -116,8 +120,15 @@ public class RtvCommand extends PreVoteCommand {
 
         GameMap gameMap = context.getMaps().get(result);
         if (gameMap == null) {
+            LOG.error("Panic! A map that was voted that wasn't found in the maplist: " + result);
             gameMap = new GameMap(result, Voting.DEFAULT_MAX_ROUNDS);
         }
+
+
+        context.getMaps().values().stream()
+                .filter(map -> map.getCooldown() > 0)
+                .forEach(map -> map.setCooldown(map.getCooldown() - 1));
+        context.getCurrentMap().setCooldown(context.getDefaultCooldown());
 
         rcon.printAll(Display.PREFIX + "Switching to map " + result + " next round");
         context.setNextMap(gameMap);

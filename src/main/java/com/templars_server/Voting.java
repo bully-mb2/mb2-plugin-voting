@@ -52,6 +52,7 @@ public class Voting {
         adminCommands.clear();
         adminCommands.add(new PollCommand());
         adminCommands.add(new ForceRtvCommand());
+        adminCommands.add(new ReloadMapsCommand());
         for (Command<Context> command : adminCommands) {
             LOG.info("    - " + command.getClass().getSimpleName());
         }
@@ -95,11 +96,7 @@ public class Voting {
         }
 
         context.addRounds(1);
-        int maxRounds = DEFAULT_MAX_ROUNDS;
-        if (context.getCurrentMap() != null) {
-            maxRounds = context.getCurrentMap().getMaxRounds();
-        }
-
+        int maxRounds = context.getCurrentMap().getMaxRounds();
         int round = context.getRound();
         if (round > maxRounds && !context.isVoting()) {
             LOG.info("Round limit reached, starting vote");
