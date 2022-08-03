@@ -52,6 +52,7 @@ public class Voting {
         adminCommands.clear();
         adminCommands.add(new PollCommand());
         adminCommands.add(new ForceRtvCommand());
+        adminCommands.add(new ReloadMapsCommand());
         for (Command<Context> command : adminCommands) {
             LOG.info("    - " + command.getClass().getSimpleName());
         }

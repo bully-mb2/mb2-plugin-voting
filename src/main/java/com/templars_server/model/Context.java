@@ -12,9 +12,9 @@ public class Context {
     private static final GameMap INIT_MAP = new GameMap("Voting restarted, loading...", 99);
 
     private final RconClient rconClient;
-    private final Map<String, GameMap> maps;
     private final Map<Integer, Player> players;
     private final int defaultCooldown;
+    private Map<String, GameMap> maps;
     private int round;
     private GameMap currentMap;
     private GameMap nextMap;
@@ -36,6 +36,10 @@ public class Context {
 
     public Map<String, GameMap> getMaps() {
         return maps;
+    }
+
+    public void setMaps(Map<String, GameMap> maps) {
+        this.maps = maps;
     }
 
     public Map<Integer, Player> getPlayers() {

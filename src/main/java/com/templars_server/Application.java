@@ -1,5 +1,6 @@
 package com.templars_server;
 
+import com.templars_server.commands.ReloadMapsCommand;
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
 import com.templars_server.model.Player;
@@ -10,16 +11,8 @@ import generated.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.LinkedHashMap;
 
 
 public class Application {
@@ -50,37 +43,8 @@ public class Application {
         );
 
         LOG.info("Loading maps");
-        File file = new File(MAPS_PATH);
-        LinkedHashMap<String, GameMap> gameMaps = new LinkedHashMap<>();
-        if (!file.exists()) {
-            try (FileWriter writer = new FileWriter(file)) {
-                LOG.info(MAPS_PATH + " not found, creating from default");
-                InputStream defaultContentStream = Application.class.getResourceAsStream("/" + MAPS_PATH);
-                if (defaultContentStream == null) {
-                    throw new NullPointerException("Couldn't find resource " + MAPS_PATH);
-                }
+        LinkedHashMap<String, GameMap> gameMaps = ReloadMapsCommand.loadMaps();
 
-                String defaultContent = new String(defaultContentStream.readAllBytes(), Charset.defaultCharset());
-                writer.write(defaultContent);
-            }
-        }
-
-        try (Stream<String> stream = Files.lines(Paths.get(MAPS_PATH))) {
-            List<String> lines = stream.collect(Collectors.toList());
-            for (String line : lines) {
-                int maxRounds = Voting.DEFAULT_MAX_ROUNDS;
-                String name = line;
-                String[] split = line.split(" ");
-                if (split.length == 2) {
-                    maxRounds = Integer.parseInt(split[0]);
-                    name = split[1];
-                }
-
-                gameMaps.put(name, new GameMap(name, maxRounds));
-            }
-        }
-
-        LOG.info("Found " + gameMaps.size() + " maps");
         LOG.info("Fetching current player count");
         Context context = new Context(
                 rcon,
