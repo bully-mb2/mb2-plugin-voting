@@ -44,6 +44,11 @@ public class ReloadMapsCommand extends Command<Context> {
             return;
         }
 
+        if (context.getNextMap() != null) {
+            rcon.printAll(Display.PREFIX + "Can't reload maps while waiting to switch, please try again on the next map");
+            return;
+        }
+
         try {
             int lastSize = context.getMaps().size();
             LinkedHashMap<String, GameMap> maps = loadMaps();
