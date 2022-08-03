@@ -36,12 +36,12 @@ public class PollCommand extends Command<Context> {
             throw new InvalidArgumentException();
         }
 
-        Vote vote = new Vote(Display.PREFIX, args, context, (result) -> onVoteComplete(result, rcon, context));
+        Vote vote = new Vote(Display.PREFIX, args, context, (result) -> onVoteComplete(context));
         vote.start();
         context.setVote(vote);
     }
 
-    private void onVoteComplete(String result, RconClient rcon, Context context) {
+    private void onVoteComplete(Context context) {
         context.setVote(null);
     }
 

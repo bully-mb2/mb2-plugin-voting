@@ -18,7 +18,6 @@ import java.util.LinkedHashMap;
 public class Application {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-    private static final String MAPS_PATH = "maps.txt";
 
     public static void main(String[] args) throws Exception {
         LOG.info("======== Starting mb2-plugin-voting ========");
