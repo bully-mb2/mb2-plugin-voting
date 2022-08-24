@@ -152,7 +152,7 @@ public class Voting {
         Player player = context.getPlayers().get(slot);
         if (player == null) {
             context.getPlayers().put(slot, new Player(slot, name));
-            LOG.debug("Player " + slot + " inserted");
+            LOG.info("Player slot: " + slot + ", name:" + name + " created");
             return;
         }
 
