@@ -150,12 +150,17 @@ public class Voting {
 
     private void putPlayer(int slot, String name) {
         Player player = context.getPlayers().get(slot);
-        if (player == null || player.getName() == null) {
+        if (player == null) {
             context.getPlayers().put(slot, new Player(slot, name));
             LOG.debug("Player " + slot + " inserted");
-        } else {
-            player.setName(name);
+            return;
         }
+
+        if (name == null) {
+            return;
+        }
+
+        player.setName(name);
     }
 
     private void printReady() {
