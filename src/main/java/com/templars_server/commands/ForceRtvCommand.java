@@ -5,6 +5,7 @@ import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
+import com.templars_server.voting.MapVote;
 
 public class ForceRtvCommand extends Command<Context> {
 
@@ -24,6 +25,6 @@ public class ForceRtvCommand extends Command<Context> {
             return;
         }
 
-        RtvCommand.startVote(context, context.getRconClient());
+        MapVote.startVote(context);
     }
 }

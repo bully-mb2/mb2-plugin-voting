@@ -16,9 +16,11 @@ public class Vote implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Vote.class);
     public static final int MAX_CHOICES = 6;
+    public static final String DONT_CHANGE = "Don't change";
     private static final int[] VOTE_DURATION = new int[]{60, 30, 30};
     private static final int[] REVOTE_DURATION = new int[]{30, 30, 30};
     private static final int REVOTE_THRESHOLD = 0;
+
 
     private final String prefix;
     private final List<String> choices;
@@ -159,6 +161,7 @@ public class Vote implements Runnable {
             choices.clear();
             choices.add(first.getKey());
             choices.add(second.getKey());
+            LOG.info("Starting second round of voting between " + first.getKey() + " and " + second.getKey());
             rcon.printAll(String.format("%sA second round of voting between %s and %s has begun", prefix, first.getKey(), second.getKey()));
             return false;
         }
@@ -180,7 +183,8 @@ public class Vote implements Runnable {
             rcon.printAll(prefix + makeChoicesString(choices, this.votes));
             rcon.printAll(prefix + winner + " wins with " + makeVoteString(votes));
         }
-        callback.onVoteComplete(winner);
+
+        callback.onVoteComplete(context, winner);
     }
 
     private int tallyVotes(int choice) {

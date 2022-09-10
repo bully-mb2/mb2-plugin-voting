@@ -8,6 +8,7 @@ import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
+import com.templars_server.voting.MapVote;
 import generated.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +102,7 @@ public class Voting {
         if (round > maxRounds && !context.isVoting()) {
             LOG.info("Round limit reached, starting vote");
             rcon.printAll(Display.PREFIX + "Round limit reached");
-            RtvCommand.startVote(context, rcon);
+            MapVote.startVote(context);
             context.setRound(1);
         }
     }
