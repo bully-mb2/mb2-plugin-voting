@@ -2,7 +2,7 @@ package com.templars_server;
 
 import com.templars_server.commands.ReloadMapsCommand;
 import com.templars_server.model.Context;
-import com.templars_server.model.GameMap;
+import com.templars_server.model.GameMapList;
 import com.templars_server.model.Player;
 import com.templars_server.util.mqtt.MBMqttClient;
 import com.templars_server.util.rcon.RconClient;
@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.util.LinkedHashMap;
 
 
 public class Application {
@@ -42,7 +41,7 @@ public class Application {
         );
 
         LOG.info("Loading maps");
-        LinkedHashMap<String, GameMap> gameMaps = ReloadMapsCommand.loadMaps();
+        GameMapList gameMaps = ReloadMapsCommand.loadMaps();
 
         LOG.info("Fetching current player count");
         Context context = new Context(

@@ -2,14 +2,13 @@ package com.templars_server.voting;
 
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
+import com.templars_server.model.GameMapList;
 import com.templars_server.model.Player;
 import com.templars_server.util.rcon.RconClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -24,7 +23,7 @@ class MapVoteTest {
 
     @BeforeEach
     void setup() {
-        Map<String, GameMap> mapList = new HashMap<>();
+        GameMapList mapList = new GameMapList();
         for (int i = 1; i<= TEST_MAP_LIST_SIZE; i++) {
             String name = "test_map_" + i;
             mapList.put(name, new GameMap(name, TEST_DEFAULT_MAXROUNDS));

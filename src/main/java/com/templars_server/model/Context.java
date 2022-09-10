@@ -4,8 +4,6 @@ import com.templars_server.Voting;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.Vote;
 
-import java.util.Map;
-
 public class Context {
 
     private static final GameMap INIT_MAP = new GameMap("Voting restarted, loading...", 99);
@@ -13,13 +11,13 @@ public class Context {
     private final RconClient rconClient;
     private final PlayerList players;
     private final int defaultCooldown;
-    private Map<String, GameMap> maps;
+    private GameMapList maps;
     private int round;
     private GameMap currentMap;
     private GameMap nextMap;
     private Vote vote;
 
-    public Context(RconClient rconClient, Map<String, GameMap> maps, int defaultCooldown) {
+    public Context(RconClient rconClient, GameMapList maps, int defaultCooldown) {
         this.rconClient = rconClient;
         this.maps = maps;
         this.players = new PlayerList();
@@ -33,11 +31,11 @@ public class Context {
         return rconClient;
     }
 
-    public Map<String, GameMap> getMaps() {
+    public GameMapList getMaps() {
         return maps;
     }
 
-    public void setMaps(Map<String, GameMap> maps) {
+    public void setMaps(GameMapList maps) {
         this.maps = maps;
     }
 
