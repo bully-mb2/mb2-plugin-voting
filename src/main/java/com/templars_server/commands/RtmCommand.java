@@ -2,7 +2,6 @@ package com.templars_server.commands;
 
 import com.templars_server.model.Context;
 import com.templars_server.render.Display;
-import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 
 public class RtmCommand extends PreVoteCommand {

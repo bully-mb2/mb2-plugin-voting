@@ -7,7 +7,6 @@ import com.templars_server.model.GameMap;
 import com.templars_server.model.GameMapList;
 import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
-import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
