@@ -16,17 +16,10 @@ public class RtvCommand extends PreVoteCommand {
     private static final float THRESHOLD_PERCENTAGE = 0.5f;
 
     public RtvCommand() {
-        this(
-                "(rtv|unrtv)",
-                "!rtv or !unrtv"
-        );
-    }
-
-    RtvCommand(String regex, String usage) {
         super(
-                regex,
+                "(rtv|unrtv)",
                 false,
-                usage
+                "!rtv or !unrtv"
         );
     }
 
