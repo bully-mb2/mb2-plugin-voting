@@ -3,7 +3,6 @@ package com.templars_server.model;
 public class Player {
 
     private final int slot;
-    private int vote;
     private boolean rtv;
     private boolean rtm;
     private String nomination;
@@ -26,14 +25,6 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getVote() {
-        return vote;
-    }
-
-    public void setVote(int vote) {
-        this.vote = vote;
     }
 
     public boolean isRtv() {
