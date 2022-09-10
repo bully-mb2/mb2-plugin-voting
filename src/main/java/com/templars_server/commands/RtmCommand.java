@@ -15,7 +15,7 @@ public class RtmCommand extends PreVoteCommand {
     }
 
     @Override
-    protected void onExecute(int slot, Context context, RconClient rcon) throws InvalidArgumentException {
+    protected void onExecute(int slot, Context context, RconClient rcon) {
         rcon.print(slot, Display.PREFIX + "RTM not yet implemented, sorry");
     }
 

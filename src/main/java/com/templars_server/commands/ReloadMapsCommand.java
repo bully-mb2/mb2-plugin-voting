@@ -37,7 +37,7 @@ public class ReloadMapsCommand extends Command<Context> {
     }
 
     @Override
-    protected void onExecute(int slot, Context context) throws InvalidArgumentException {
+    protected void onExecute(int slot, Context context) {
         RconClient rcon = context.getRconClient();
         if (context.isVoting()) {
             rcon.printAll(Display.PREFIX + "Can't reload maps while there is a vote in progress");
