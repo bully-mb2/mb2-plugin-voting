@@ -2,14 +2,13 @@ package com.templars_server.commands;
 
 import com.templars_server.model.Context;
 import com.templars_server.model.Player;
+import com.templars_server.model.PlayerList;
 import com.templars_server.render.Display;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.MapVote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 public class RtvCommand extends PreVoteCommand {
 
@@ -38,7 +37,7 @@ public class RtvCommand extends PreVoteCommand {
     }
 
     void rtv(int slot, Context context, RconClient rcon, boolean rtv) {
-        Map<Integer, Player> players = context.getPlayers();
+        PlayerList players = context.getPlayers();
         Player player = players.get(slot);
         boolean before = player.isRtv();
         player.setRtv(rtv);
