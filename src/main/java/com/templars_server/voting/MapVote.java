@@ -30,11 +30,16 @@ public class MapVote {
     }
 
     static List<String> collectChoices(Context context) {
+        List<String> nominations = collectNominations(context.getPlayers());
+        List<String> excludedMaps = new ArrayList<>();
+        excludedMaps.add(context.getCurrentMap().getName());
+        excludedMaps.addAll(nominations);
+
         List<String> choices = new ArrayList<>();
-        choices.addAll(collectNominations(context.getPlayers()));
+        choices.addAll(nominations);
         choices.addAll(collectRandomMaps(
                 context.getMaps(),
-                context.getCurrentMap(),
+                excludedMaps,
                 Vote.MAX_CHOICES - choices.size() - 1
         ));
         choices.add(Vote.DONT_CHANGE);
@@ -54,11 +59,11 @@ public class MapVote {
                 .collect(Collectors.toList());
     }
 
-    static List<String> collectRandomMaps(Map<String, GameMap> maps, GameMap currentMap, int amount) {
+    static List<String> collectRandomMaps(Map<String, GameMap> maps, List<String> excludedMaps, int amount) {
         List<String> mapChoices = new ArrayList<>(maps.keySet());
         Collections.shuffle(mapChoices);
         return mapChoices.stream()
-                .filter(choice -> !choice.equals(currentMap.getName()))
+                .filter(choice -> !excludedMaps.contains(choice))
                 .filter(choice -> maps.get(choice).getCooldown() < 1)
                 .limit(amount)
                 .collect(Collectors.toList());

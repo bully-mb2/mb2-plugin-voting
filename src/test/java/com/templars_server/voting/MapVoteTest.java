@@ -71,6 +71,21 @@ class MapVoteTest {
     }
 
     @Test
+    void testCollectChoices_OneNominationOneMapInMaplist_NoDuplicates() {
+        String testMapName = "test_map_1";
+        context.getPlayers().get(1).setNomination(testMapName);
+        context.getMaps().clear();
+        context.getMaps().put(testMapName, new GameMap(testMapName, TEST_DEFAULT_MAXROUNDS));
+        List<String> choices = MapVote.collectChoices(context);
+
+        assertThat(choices).hasSize(2);
+        assertThat(choices).containsAnyOf(context.getMaps().keySet().toArray(new String[]{}));
+        assertThat(choices).doesNotHaveDuplicates();
+        assertThat(choices).containsOnlyOnce(testMapName);
+        assertThat(choices).containsOnlyOnce(Vote.DONT_CHANGE);
+    }
+
+    @Test
     void testCollectChoices_AllNominations_RandomNominationsOccurInList() {
         for (int i=1; i<=TEST_PLAYERLIST_SIZE; i++) {
             context.getPlayers().get(i).setNomination("test_nomination_" + i);
@@ -151,14 +166,14 @@ class MapVoteTest {
     @Test
     void testCollectRandomMaps_EmptyMapList_EmptyList() {
         context.getMaps().clear();
-        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), context.getCurrentMap(), 1);
+        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), List.of(context.getCurrentMap().getName()), 1);
 
         assertThat(randomMaps).isEmpty();
     }
 
     @Test
     void testCollectRandomMaps_OneRandomMap_OneMapInList() {
-        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), context.getCurrentMap(), 1);
+        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), List.of(context.getCurrentMap().getName()), 1);
 
         assertThat(randomMaps).hasSize(1);
         assertThat(randomMaps).containsAnyOf(context.getMaps().keySet().toArray(new String[]{}));
@@ -166,7 +181,7 @@ class MapVoteTest {
 
     @Test
     void testCollectRandomMaps_TooManyMaps_SameSizeAsMapList() {
-        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), context.getCurrentMap(), TEST_MAP_LIST_SIZE + 1);
+        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), List.of(context.getCurrentMap().getName()), TEST_MAP_LIST_SIZE + 1);
 
         assertThat(randomMaps).hasSize(TEST_MAP_LIST_SIZE);
         assertThat(randomMaps).containsAnyOf(context.getMaps().keySet().toArray(new String[]{}));
@@ -179,7 +194,7 @@ class MapVoteTest {
         context.getMaps().clear();
         context.getMaps().put(testMap, new GameMap(testMap, TEST_DEFAULT_MAXROUNDS));
         context.setCurrentMap(new GameMap(testMap, TEST_DEFAULT_MAXROUNDS));
-        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), context.getCurrentMap(), 1);
+        List<String> randomMaps = MapVote.collectRandomMaps(context.getMaps(), List.of(context.getCurrentMap().getName()), 1);
 
         assertThat(randomMaps).isEmpty();
     }
