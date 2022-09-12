@@ -34,6 +34,8 @@ class MapVoteTest {
                 mapList,
                 TEST_DEFAULT_COOLDOWN,
                 null,
+                null,
+                false,
                 false,
                 false,
                 null

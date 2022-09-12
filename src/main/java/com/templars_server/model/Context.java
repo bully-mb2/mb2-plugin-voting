@@ -13,7 +13,9 @@ public class Context {
     private final RconClient rconClient;
     private final PlayerList players;
     private final int defaultCooldown;
+    private final GameMap defaultMap;
     private final GameMode defaultGameMode;
+    private final boolean resetOnEmpty;
     private final boolean rtvEnabled;
     private final boolean rtmEnabled;
     private final List<GameMode> rtmGameModes;
@@ -29,7 +31,9 @@ public class Context {
             RconClient rconClient,
             GameMapList maps,
             int defaultCooldown,
+            GameMap defaultMap,
             GameMode defaultGameMode,
+            boolean resetOnEmpty,
             boolean rtvEnabled,
             boolean rtmEnabled,
             List<GameMode> rtmGameModes
@@ -38,7 +42,9 @@ public class Context {
         this.maps = maps;
         this.players = new PlayerList();
         this.defaultCooldown = defaultCooldown;
+        this.defaultMap = defaultMap;
         this.defaultGameMode = defaultGameMode;
+        this.resetOnEmpty = resetOnEmpty;
         this.rtvEnabled = rtvEnabled;
         this.rtmEnabled = rtmEnabled;
         this.rtmGameModes = rtmGameModes;
@@ -65,6 +71,10 @@ public class Context {
         return players;
     }
 
+    public boolean isResetOnEmpty() {
+        return resetOnEmpty;
+    }
+
     public boolean isRtvEnabled() {
         return rtvEnabled;
     }
@@ -79,6 +89,10 @@ public class Context {
 
     public int getDefaultCooldown() {
         return defaultCooldown;
+    }
+
+    public GameMap getDefaultMap() {
+        return defaultMap;
     }
 
     public GameMode getDefaultGameMode() {

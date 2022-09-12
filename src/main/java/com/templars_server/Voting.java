@@ -65,10 +65,23 @@ public class Voting {
     }
 
     void onClientDisconnectEvent(ClientDisconnectEvent event) {
-        context.getPlayers().remove(event.getSlot());
+        Player prev = context.getPlayers().remove(event.getSlot());
         if (context.isVoting()) {
             LOG.info(event.getSlot() + " disconnected during vote, removing from list");
             context.getVote().vote(event.getSlot(), null);
+        }
+
+        if (
+                context.isResetOnEmpty()
+                && !(context.getCurrentMap().equals(context.getDefaultMap()) && context.getCurrentGameMode().equals(context.getDefaultGameMode()))
+                && context.getPlayers().size() < 1
+                && prev != null
+        ) {
+            LOG.info("Server is empty, reverting to default mode and map");
+            rcon.mode(context.getDefaultGameMode().getId(), context.getDefaultMap().getName());
+            context.setCurrentGameMode(context.getDefaultGameMode());
+            context.setCurrentMap(context.getDefaultMap());
+            context.reset();
         }
     }
 
@@ -81,7 +94,13 @@ public class Voting {
     void onInitGameEvent(InitGameEvent event) {
         GameMap gameMap = context.getMapByName(event.getMapName());
         context.setCurrentMap(gameMap);
-        LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+
+        GameMode gameMode = GameMode.fromValue("" + event.getGAuthenticity());
+        if (gameMode != null) {
+            context.setCurrentGameMode(gameMode);
+        }
+
+        LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds() + " game mode: " + gameMode);
         if (!context.isVoting()) {
             rcon.printConAll(Display.PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
         }

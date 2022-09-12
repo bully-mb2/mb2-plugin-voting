@@ -1,10 +1,7 @@
 package com.templars_server;
 
 import com.templars_server.commands.ReloadMapsCommand;
-import com.templars_server.model.Context;
-import com.templars_server.model.GameMapList;
-import com.templars_server.model.GameMode;
-import com.templars_server.model.Player;
+import com.templars_server.model.*;
 import com.templars_server.util.mqtt.MBMqttClient;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.util.settings.Settings;
@@ -28,12 +25,24 @@ public class Application {
         Settings settings = new Settings();
         settings.load("application.properties");
 
+        LOG.info("Loading maps");
+        GameMapList gameMaps = ReloadMapsCommand.loadMaps();
+
         LOG.info("Reading properties");
         String uri = "tcp://localhost:" + settings.getInt("mqtt.port");
         String topic = settings.get("mqtt.topic");
         int defaultCooldown = settings.getInt("voting.default.cooldown");
+        boolean resetOnEmpty = settings.getBoolean("voting.reset_on_empty");
         boolean rtvEnabled = settings.getBoolean("voting.rtv.enabled");
         boolean rtmEnabled = settings.getBoolean("voting.rtm.enabled");
+        String defaultMapString = settings.get("voting.default.map");
+        GameMap defaultMap = gameMaps.get(defaultMapString);
+        if (defaultMap == null) {
+            LOG.error("Default map " + defaultMapString + " not found in map list, make sure it is in there");
+            LOG.error("Exiting...");
+            return;
+        }
+
         GameMode defaultGameMode = readMode(settings.get("voting.default.mbmode"));
         if (defaultGameMode == null) {
             LOG.error("Selecting default mode: open");
@@ -49,6 +58,7 @@ public class Application {
                 LOG.error("Exiting...");
                 return;
             }
+
             rtmGameModes.add(mode);
         }
 
@@ -62,15 +72,14 @@ public class Application {
 
         );
 
-        LOG.info("Loading maps");
-        GameMapList gameMaps = ReloadMapsCommand.loadMaps();
-
         LOG.info("Creating context");
         Context context = new Context(
                 rcon,
                 gameMaps,
                 defaultCooldown,
+                defaultMap,
                 defaultGameMode,
+                resetOnEmpty,
                 rtvEnabled,
                 rtmEnabled,
                 rtmGameModes

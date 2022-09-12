@@ -16,7 +16,7 @@ public class ModeVote {
     private static final Logger LOG = LoggerFactory.getLogger(ModeVote.class);
 
     public static void startVote(Context context) {
-        List<String> choices = Arrays.stream(GameMode.values())
+        List<String> choices = context.getRtmGameModes().stream()
                 .map(GameMode::getDisplay)
                 .collect(Collectors.toList());
         LOG.info("Creating vote with choices: " + Arrays.toString(choices.toArray()));
