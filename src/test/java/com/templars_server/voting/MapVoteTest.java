@@ -32,7 +32,11 @@ class MapVoteTest {
         context = new Context(
                 mock(RconClient.class),
                 mapList,
-                TEST_DEFAULT_COOLDOWN
+                TEST_DEFAULT_COOLDOWN,
+                null,
+                false,
+                false,
+                null
         );
         for (int i=1; i<=TEST_PLAYERLIST_SIZE; i++) {
             context.getPlayers().put(i, new Player(i, "test_player_" + i));

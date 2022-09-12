@@ -19,6 +19,11 @@ public class ForceRtvCommand extends Command<Context> {
     @Override
     protected void onExecute(int slot, Context context) {
         RconClient rcon = context.getRconClient();
+        if (!context.isRtvEnabled()) {
+            rcon.printAll(String.format("%sRTV is disabled", Display.RTV_PREFIX));
+            return;
+        }
+
         if (context.isVoting()) {
             rcon.printAll(Display.PREFIX + "There is already a vote in progress");
             return;

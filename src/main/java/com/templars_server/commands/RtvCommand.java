@@ -25,6 +25,11 @@ public class RtvCommand extends PreVoteCommand {
 
     @Override
     protected void onExecute(int slot, Context context, RconClient rcon) throws InvalidArgumentException {
+        if (!context.isRtvEnabled()) {
+            rcon.printAll(String.format("%sRTV is disabled", Display.RTV_PREFIX));
+            return;
+        }
+
         boolean mode = getArg(0).equalsIgnoreCase("rtv");
         rtv(slot, context, context.getRconClient(), mode);
     }
@@ -40,18 +45,18 @@ public class RtvCommand extends PreVoteCommand {
         int threshold = (int) Math.ceil(players.size() * THRESHOLD_PERCENTAGE);
         if (player.isRtv()) {
             if (before) {
-                rcon.printAll(String.format("%s%s^7 really wants you to rock the vote (%d/%d)", Display.PREFIX, player.getName(), voters, threshold));
+                rcon.printAll(String.format("%s%s^7 really wants you to rock the vote (%d/%d)", Display.RTV_PREFIX, player.getName(), voters, threshold));
             } else {
-                rcon.printAll(String.format("%s%s^7 wants to rock the vote (%d/%d)", Display.PREFIX, player.getName(), voters, threshold));
+                rcon.printAll(String.format("%s%s^7 wants to rock the vote (%d/%d)", Display.RTV_PREFIX, player.getName(), voters, threshold));
                 LOG.info(String.format("Player slot: %d, name: %s rtv now (%d/%d)", player.getSlot(), player.getName(), voters, threshold));
             }
         } else {
             if (before) {
-                rcon.printAll(String.format("%s%s^7 no longer wants to rock the vote (%d/%d)", Display.PREFIX, player.getName(), voters, threshold));
+                rcon.printAll(String.format("%s%s^7 no longer wants to rock the vote (%d/%d)", Display.RTV_PREFIX, player.getName(), voters, threshold));
                 LOG.info(String.format("Player slot: %d, name: %s unrtv now (%d/%d)", player.getSlot(), player.getName(), voters, threshold));
                 return;
             } else {
-                rcon.print(slot, String.format("%sYou haven't rocked the vote yet (%d/%d)", Display.PREFIX, voters, threshold));
+                rcon.print(slot, String.format("%sYou haven't rocked the vote yet (%d/%d)", Display.RTV_PREFIX, voters, threshold));
             }
         }
 

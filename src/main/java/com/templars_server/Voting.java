@@ -3,6 +3,7 @@ package com.templars_server;
 import com.templars_server.commands.*;
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
+import com.templars_server.model.GameMode;
 import com.templars_server.model.Player;
 import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
@@ -24,14 +25,12 @@ public class Voting {
 
     private final Context context;
     private final RconClient rcon;
-    private final int defaultMBMode;
     private final List<Command<Context>> commands;
     private final List<Command<Context>> adminCommands;
 
-    public Voting(Context context, RconClient rcon, int defaultMBMode) {
+    public Voting(Context context, RconClient rcon) {
         this.context = context;
         this.rcon = rcon;
-        this.defaultMBMode = defaultMBMode;
         this.commands = new ArrayList<>();
         this.adminCommands = new ArrayList<>();
     }
@@ -92,8 +91,17 @@ public class Voting {
         GameMap nextMap = context.getNextMap();
         if (nextMap != null) {
             LOG.info("New round with next map set, switching to " + nextMap.getName());
-            rcon.mode(defaultMBMode, nextMap.getName());
+            rcon.mode(context.getCurrentGameMode().getId(), nextMap.getName());
             context.reset();
+        }
+
+        GameMode nextMode = context.getNextGameMode();
+        if (nextMode != null) {
+            LOG.info("New round with next mode set, switching to " + nextMode.getKey());
+            rcon.mode(nextMode.getId());
+            context.setCurrentGameMode(nextMode);
+            context.reset();
+            return;
         }
 
         context.addRounds(1);
@@ -171,7 +179,16 @@ public class Voting {
             version = "dev";
         }
 
-        rcon.send("sets RTVRTM 3807/" + version);
+        String magicFunnyNumber = "0";
+        if (context.isRtvEnabled() && context.isRtmEnabled()) {
+            magicFunnyNumber = "3928";
+        } else if (context.isRtvEnabled()) {
+            magicFunnyNumber = "1928";
+        } else if (context.isRtmEnabled()) {
+            magicFunnyNumber = "2000";
+        }
+
+        rcon.send("sets RTVRTM " + magicFunnyNumber + "/" + version);
         rcon.printAll(Display.PREFIX + "Voting is now enabled");
     }
 

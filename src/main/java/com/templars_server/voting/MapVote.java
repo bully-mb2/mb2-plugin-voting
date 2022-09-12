@@ -20,7 +20,7 @@ public class MapVote {
         List<String> choices = collectChoices(context);
         LOG.info("Creating vote with choices: " + Arrays.toString(choices.toArray()));
         Vote vote = new Vote(
-                Display.PREFIX,
+                Display.RTV_PREFIX,
                 choices,
                 context,
                 MapVote::onVoteComplete
@@ -92,7 +92,7 @@ public class MapVote {
                 .forEach(map -> map.setCooldown(map.getCooldown() - 1));
         context.getCurrentMap().setCooldown(context.getDefaultCooldown());
 
-        rcon.printAll(Display.PREFIX + "Switching to map " + result + " next round");
+        rcon.printAll(Display.RTV_PREFIX + "Switching to map " + result + " next round");
         context.setNextMap(gameMap);
     }
 

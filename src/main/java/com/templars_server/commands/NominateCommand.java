@@ -20,6 +20,11 @@ public class NominateCommand extends PreVoteCommand {
 
     @Override
     protected void onExecute(int slot, Context context, RconClient rcon) throws InvalidArgumentException {
+        if (!context.isRtvEnabled()) {
+            rcon.printAll(String.format("%sRTV is disabled", Display.RTV_PREFIX));
+            return;
+        }
+
         if (context.isVoting()) {
             rcon.print(slot, Display.PREFIX + "There is already a vote in progress");
             return;
