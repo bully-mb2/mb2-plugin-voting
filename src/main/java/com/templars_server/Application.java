@@ -1,11 +1,11 @@
 package com.templars_server;
 
 import com.templars_server.commands.ReloadMapsCommand;
+import com.templars_server.mb2_log_reader.schema.*;
 import com.templars_server.model.*;
 import com.templars_server.util.mqtt.MBMqttClient;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.util.settings.Settings;
-import generated.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

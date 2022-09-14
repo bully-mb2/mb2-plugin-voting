@@ -1,6 +1,7 @@
 package com.templars_server;
 
 import com.templars_server.commands.*;
+import com.templars_server.mb2_log_reader.schema.*;
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
 import com.templars_server.model.GameMode;
@@ -10,7 +11,6 @@ import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.MapVote;
-import generated.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
