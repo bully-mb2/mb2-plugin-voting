@@ -25,6 +25,11 @@ public class SearchCommand extends Command<Context> {
     @Override
     protected void onExecute(int slot, Context context) throws InvalidArgumentException {
         RconClient rcon = context.getRconClient();
+        if (!context.isRtvEnabled()) {
+            rcon.printAll(String.format("%sRTV is disabled", Display.RTV_PREFIX));
+            return;
+        }
+
         String query = getArg(0);
         List<String> maps = context.getMaps().keySet().stream()
                 .filter(map -> map.contains(query))

@@ -25,6 +25,11 @@ public class MapListCommand extends Command<Context> {
     @Override
     protected void onExecute(int slot, Context context) throws InvalidArgumentException {
         RconClient rcon = context.getRconClient();
+        if (!context.isRtvEnabled()) {
+            rcon.printAll(String.format("%sRTV is disabled", Display.RTV_PREFIX));
+            return;
+        }
+        
         int page = getArgInt(0, 1);
         if (page < 1) {
             page = 1;

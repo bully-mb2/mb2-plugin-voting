@@ -4,50 +4,99 @@ import com.templars_server.Voting;
 import com.templars_server.util.rcon.RconClient;
 import com.templars_server.voting.Vote;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class Context {
 
     private static final GameMap INIT_MAP = new GameMap("Voting restarted, loading...", 99);
 
     private final RconClient rconClient;
-    private final Map<Integer, Player> players;
+    private final PlayerList players;
     private final int defaultCooldown;
-    private Map<String, GameMap> maps;
+    private final GameMap defaultMap;
+    private final GameMode defaultGameMode;
+    private final boolean resetOnEmpty;
+    private final boolean rtvEnabled;
+    private final boolean rtmEnabled;
+    private final List<GameMode> rtmGameModes;
+    private GameMapList maps;
     private int round;
     private GameMap currentMap;
     private GameMap nextMap;
+    private GameMode currentGameMode;
+    private GameMode nextGameMode;
     private Vote vote;
 
-    public Context(RconClient rconClient, Map<String, GameMap> maps, int defaultCooldown) {
+    public Context(
+            RconClient rconClient,
+            GameMapList maps,
+            int defaultCooldown,
+            GameMap defaultMap,
+            GameMode defaultGameMode,
+            boolean resetOnEmpty,
+            boolean rtvEnabled,
+            boolean rtmEnabled,
+            List<GameMode> rtmGameModes
+    ) {
         this.rconClient = rconClient;
         this.maps = maps;
-        this.players = new HashMap<>();
+        this.players = new PlayerList();
         this.defaultCooldown = defaultCooldown;
+        this.defaultMap = defaultMap;
+        this.defaultGameMode = defaultGameMode;
+        this.resetOnEmpty = resetOnEmpty;
+        this.rtvEnabled = rtvEnabled;
+        this.rtmEnabled = rtmEnabled;
+        this.rtmGameModes = rtmGameModes;
         this.round = 0;
         this.currentMap = INIT_MAP;
         this.nextMap = null;
+        this.currentGameMode = defaultGameMode;
+        this.nextGameMode = null;
     }
 
     public RconClient getRconClient() {
         return rconClient;
     }
 
-    public Map<String, GameMap> getMaps() {
+    public GameMapList getMaps() {
         return maps;
     }
 
-    public void setMaps(Map<String, GameMap> maps) {
+    public void setMaps(GameMapList maps) {
         this.maps = maps;
     }
 
-    public Map<Integer, Player> getPlayers() {
+    public PlayerList getPlayers() {
         return players;
+    }
+
+    public boolean isResetOnEmpty() {
+        return resetOnEmpty;
+    }
+
+    public boolean isRtvEnabled() {
+        return rtvEnabled;
+    }
+
+    public boolean isRtmEnabled() {
+        return rtmEnabled;
+    }
+
+    public List<GameMode> getRtmGameModes() {
+        return rtmGameModes;
     }
 
     public int getDefaultCooldown() {
         return defaultCooldown;
+    }
+
+    public GameMap getDefaultMap() {
+        return defaultMap;
+    }
+
+    public GameMode getDefaultGameMode() {
+        return defaultGameMode;
     }
 
     public int getRound() {
@@ -85,6 +134,22 @@ public class Context {
         this.nextMap = nextMap;
     }
 
+    public GameMode getCurrentGameMode() {
+        return currentGameMode;
+    }
+
+    public void setCurrentGameMode(GameMode currentGameMode) {
+        this.currentGameMode = currentGameMode;
+    }
+
+    public GameMode getNextGameMode() {
+        return nextGameMode;
+    }
+
+    public void setNextGameMode(GameMode nextGameMode) {
+        this.nextGameMode = nextGameMode;
+    }
+
     public Vote getVote() {
         return vote;
     }
@@ -111,6 +176,7 @@ public class Context {
         round = 0;
         currentMap = INIT_MAP;
         nextMap = null;
+        nextGameMode = null;
     }
 
 }

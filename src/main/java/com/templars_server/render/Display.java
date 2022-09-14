@@ -6,6 +6,8 @@ import java.util.List;
 public class Display {
 
     public static final String PREFIX = "^2Vote » ^7";
+    public static final String RTV_PREFIX = "^2RTV » ^7";
+    public static final String RTM_PREFIX = "^2RTM » ^7";
     private static final int MAX_MESSAGE_LENGTH = 118;
 
     public static List<String> renderMaps(List<String> mapList) {

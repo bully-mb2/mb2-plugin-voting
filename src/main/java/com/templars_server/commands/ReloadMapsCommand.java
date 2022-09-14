@@ -4,9 +4,9 @@ import com.templars_server.Application;
 import com.templars_server.Voting;
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
+import com.templars_server.model.GameMapList;
 import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
-import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,7 +36,7 @@ public class ReloadMapsCommand extends Command<Context> {
     }
 
     @Override
-    protected void onExecute(int slot, Context context) throws InvalidArgumentException {
+    protected void onExecute(int slot, Context context) {
         RconClient rcon = context.getRconClient();
         if (context.isVoting()) {
             rcon.printAll(Display.PREFIX + "Can't reload maps while there is a vote in progress");
@@ -51,7 +50,7 @@ public class ReloadMapsCommand extends Command<Context> {
 
         try {
             int lastSize = context.getMaps().size();
-            LinkedHashMap<String, GameMap> maps = loadMaps();
+            GameMapList maps = loadMaps();
             context.setMaps(maps);
             rcon.printAll(Display.PREFIX + "Successfully reloaded maps, old size (" + lastSize + ") new size (" + maps.size() + ")");
         } catch (NumberFormatException e) {
@@ -62,10 +61,10 @@ public class ReloadMapsCommand extends Command<Context> {
         }
     }
 
-    public static LinkedHashMap<String, GameMap> loadMaps() throws IOException {
+    public static GameMapList loadMaps() throws IOException {
         LOG.info("Loading maps");
         File file = new File(MAPS_PATH);
-        LinkedHashMap<String, GameMap> gameMaps = new LinkedHashMap<>();
+        GameMapList gameMaps = new GameMapList();
         if (!file.exists()) {
             try (FileWriter writer = new FileWriter(file)) {
                 LOG.info(MAPS_PATH + " not found, creating from default");

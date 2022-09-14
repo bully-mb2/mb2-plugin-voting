@@ -1,14 +1,16 @@
 package com.templars_server;
 
 import com.templars_server.commands.*;
+import com.templars_server.mb2_log_reader.schema.*;
 import com.templars_server.model.Context;
 import com.templars_server.model.GameMap;
+import com.templars_server.model.GameMode;
 import com.templars_server.model.Player;
 import com.templars_server.render.Display;
 import com.templars_server.util.command.Command;
 import com.templars_server.util.command.InvalidArgumentException;
 import com.templars_server.util.rcon.RconClient;
-import generated.*;
+import com.templars_server.voting.MapVote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,14 +25,12 @@ public class Voting {
 
     private final Context context;
     private final RconClient rcon;
-    private final int defaultMBMode;
     private final List<Command<Context>> commands;
     private final List<Command<Context>> adminCommands;
 
-    public Voting(Context context, RconClient rcon, int defaultMBMode) {
+    public Voting(Context context, RconClient rcon) {
         this.context = context;
         this.rcon = rcon;
-        this.defaultMBMode = defaultMBMode;
         this.commands = new ArrayList<>();
         this.adminCommands = new ArrayList<>();
     }
@@ -65,10 +65,23 @@ public class Voting {
     }
 
     void onClientDisconnectEvent(ClientDisconnectEvent event) {
-        context.getPlayers().remove(event.getSlot());
+        Player prev = context.getPlayers().remove(event.getSlot());
         if (context.isVoting()) {
             LOG.info(event.getSlot() + " disconnected during vote, removing from list");
             context.getVote().vote(event.getSlot(), null);
+        }
+
+        if (
+                context.isResetOnEmpty()
+                && !(context.getCurrentMap().equals(context.getDefaultMap()) && context.getCurrentGameMode().equals(context.getDefaultGameMode()))
+                && context.getPlayers().size() < 1
+                && prev != null
+        ) {
+            LOG.info("Server is empty, reverting to default mode and map");
+            rcon.mode(context.getDefaultGameMode().getId(), context.getDefaultMap().getName());
+            context.setCurrentGameMode(context.getDefaultGameMode());
+            context.setCurrentMap(context.getDefaultMap());
+            context.reset();
         }
     }
 
@@ -81,7 +94,13 @@ public class Voting {
     void onInitGameEvent(InitGameEvent event) {
         GameMap gameMap = context.getMapByName(event.getMapName());
         context.setCurrentMap(gameMap);
-        LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
+
+        GameMode gameMode = GameMode.fromValue("" + event.getGAuthenticity());
+        if (gameMode != null) {
+            context.setCurrentGameMode(gameMode);
+        }
+
+        LOG.info("Map " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds() + " game mode: " + gameMode);
         if (!context.isVoting()) {
             rcon.printConAll(Display.PREFIX + "You are playing on " + gameMap.getName() + " round " + context.getRound() + "/" + gameMap.getMaxRounds());
         }
@@ -91,8 +110,17 @@ public class Voting {
         GameMap nextMap = context.getNextMap();
         if (nextMap != null) {
             LOG.info("New round with next map set, switching to " + nextMap.getName());
-            rcon.mode(defaultMBMode, nextMap.getName());
+            rcon.mode(context.getCurrentGameMode().getId(), nextMap.getName());
             context.reset();
+        }
+
+        GameMode nextMode = context.getNextGameMode();
+        if (nextMode != null) {
+            LOG.info("New round with next mode set, switching to " + nextMode.getKey());
+            rcon.mode(nextMode.getId());
+            context.setCurrentGameMode(nextMode);
+            context.reset();
+            return;
         }
 
         context.addRounds(1);
@@ -101,7 +129,7 @@ public class Voting {
         if (round > maxRounds && !context.isVoting()) {
             LOG.info("Round limit reached, starting vote");
             rcon.printAll(Display.PREFIX + "Round limit reached");
-            RtvCommand.startVote(context, rcon);
+            MapVote.startVote(context);
             context.setRound(1);
         }
     }
@@ -150,12 +178,17 @@ public class Voting {
 
     private void putPlayer(int slot, String name) {
         Player player = context.getPlayers().get(slot);
-        if (player == null || player.getName() == null) {
+        if (player == null) {
             context.getPlayers().put(slot, new Player(slot, name));
-            LOG.debug("Player " + slot + " inserted");
-        } else {
-            player.setName(name);
+            LOG.info("Player slot: " + slot + ", name:" + name + " created");
+            return;
         }
+
+        if (name == null) {
+            return;
+        }
+
+        player.setName(name);
     }
 
     private void printReady() {
@@ -165,7 +198,16 @@ public class Voting {
             version = "dev";
         }
 
-        rcon.send("sets RTVRTM 3807/" + version);
+        String magicFunnyNumber = "0";
+        if (context.isRtvEnabled() && context.isRtmEnabled()) {
+            magicFunnyNumber = "3928";
+        } else if (context.isRtvEnabled()) {
+            magicFunnyNumber = "1928";
+        } else if (context.isRtmEnabled()) {
+            magicFunnyNumber = "2000";
+        }
+
+        rcon.send("sets RTVRTM " + magicFunnyNumber + "/" + version);
         rcon.printAll(Display.PREFIX + "Voting is now enabled");
     }
 
