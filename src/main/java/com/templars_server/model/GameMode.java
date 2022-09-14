@@ -55,7 +55,7 @@ public enum GameMode {
         }
 
         for (GameMode mode : GameMode.values()) {
-            if (mode.getKey().equals(key) || mode.getDisplay().equals(key)) {
+            if (mode.getKey().equalsIgnoreCase(key) || mode.getDisplay().equalsIgnoreCase(key)) {
                 return mode;
             }
         }
