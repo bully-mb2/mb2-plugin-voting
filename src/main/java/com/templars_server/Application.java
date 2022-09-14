@@ -53,6 +53,10 @@ public class Application {
         List<GameMode> rtmGameModes = new ArrayList<>();
         LOG.info("Reading RTM Modes");
         for (String value : rtmModesString.split(",")) {
+            if (value.isEmpty()) {
+                continue;
+            }
+
             GameMode mode = readMode(value.trim());
             if (mode == null) {
                 LOG.error("Exiting...");
@@ -60,6 +64,11 @@ public class Application {
             }
 
             rtmGameModes.add(mode);
+        }
+
+        if (rtmEnabled && rtmGameModes.isEmpty()) {
+            LOG.warn("No game modes found for RTM, disabling RTM!");
+            rtmEnabled = false;
         }
 
         LOG.info("Setting up rcon client");
