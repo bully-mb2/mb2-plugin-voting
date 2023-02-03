@@ -30,6 +30,7 @@ public class Vote implements Runnable {
     private final VoteCallback callback;
     private final Thread thread;
     private volatile boolean canceled;
+    private volatile boolean skipPhase;
 
     public Vote(String prefix, List<String> choices, Context context, VoteCallback callback) {
         this.prefix = prefix;
@@ -40,6 +41,7 @@ public class Vote implements Runnable {
         this.callback = callback;
         this.thread = new Thread(this, "Vote-Thread");
         this.canceled = false;
+        this.skipPhase = false;
     }
 
     public void start() {
@@ -86,6 +88,7 @@ public class Vote implements Runnable {
             if (votes.size() >= context.getPlayers().size()) {
                 LOG.info(votes.size() + " / " + context.getPlayers().size() + " voted, interrupting vote thread and finishing the vote");
                 rcon.printAll(prefix + "Everyone has voted!");
+                skipPhase = true;
                 thread.interrupt();
             }
         }
@@ -112,6 +115,13 @@ public class Vote implements Runnable {
             try {
                 Thread.sleep(duration[step] * 1000L);
             } catch (InterruptedException e) {
+                if (skipPhase) {
+                    //Ignore result, reset the interrupted flag if we want to skip this voting phase
+                    //noinspection ResultOfMethodCallIgnored
+                    Thread.interrupted();
+                    skipPhase = false;
+                }
+
                 return;
             }
 
