@@ -129,6 +129,10 @@ public class Vote implements Runnable {
     }
 
     private boolean isVoteFinished() {
+        if (canceled || !isAlive()) {
+            return true;
+        }
+
         Map<String, Integer> resultMap = new LinkedHashMap<>();
         for (Integer vote : votes.values()) {
             resultMap.computeIfAbsent(choices.get(vote), k -> tallyVotes(vote));
