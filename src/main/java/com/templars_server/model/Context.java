@@ -174,7 +174,6 @@ public class Context {
         }
 
         round = 0;
-        currentMap = INIT_MAP;
         nextMap = null;
         nextGameMode = null;
     }
