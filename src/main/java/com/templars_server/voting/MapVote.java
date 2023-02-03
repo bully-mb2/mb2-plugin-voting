@@ -87,11 +87,6 @@ public class MapVote {
             gameMap = new GameMap(result, Voting.DEFAULT_MAX_ROUNDS);
         }
 
-        context.getMaps().values().stream()
-                .filter(map -> map.getCooldown() > 0)
-                .forEach(map -> map.setCooldown(map.getCooldown() - 1));
-        context.getCurrentMap().setCooldown(context.getDefaultCooldown());
-
         rcon.printAll(Display.RTV_PREFIX + "Switching to map " + result + " next round");
         context.setNextMap(gameMap);
     }

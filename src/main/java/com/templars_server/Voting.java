@@ -93,7 +93,14 @@ public class Voting {
 
     void onInitGameEvent(InitGameEvent event) {
         GameMap gameMap = context.getMapByName(event.getMapName());
-        context.setCurrentMap(gameMap);
+        if (context.getCurrentMap() != gameMap) {
+            LOG.info("New map detected, adjusting cooldowns (" + event.getMapName() + ")");
+            context.getMaps().values().stream()
+                    .filter(map -> map.getCooldown() > 0)
+                    .forEach(map -> map.setCooldown(map.getCooldown() - 1));
+            gameMap.setCooldown(context.getDefaultCooldown());
+            context.setCurrentMap(gameMap);
+        }
 
         GameMode gameMode = GameMode.fromValue("" + event.getGAuthenticity());
         if (gameMode != null) {
